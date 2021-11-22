@@ -1,6 +1,8 @@
+#include <modele.h>
 
 
 Plateau deplacement(Plateau plateau, int direction) {
+  srand((unsigned) time(0));
   switch ( direction ) {
     case GAUCHE:
       return deplacementGauche(plateau);
