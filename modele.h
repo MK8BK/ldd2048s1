@@ -167,9 +167,9 @@ Plateau deplacement(Plateau plateau, int direction){
 		case 3:
 			auxPlateau = deplacementBas(plateau);
 			break;
-		// default:
-		// 	cerr << "Deplacement non-autorise!" << endl;
-		// 	exit(-1);
+		default:
+			cerr << "Deplacement non-autorise!" << endl;
+			exit(-1);
 	}
 	if (auxPlateau==plateau){
 		throw invalid_argument("mouvement invalide");

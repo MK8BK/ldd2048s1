@@ -40,5 +40,5 @@ int main(){
 	};
 
 	srand((unsigned) time(0));
-	cout << dessine(deplacement(testPlateau, 2)) << endl;
+	cout << dessine(deplacement(testPlateau, 7)) << endl;
 }
