@@ -19,18 +19,6 @@ int tireDeuxOuQuatre(){
 	return fillerValues[index];
 }
 
-bool comparePlateaux(Plateau plateau1, Plateau plateau2){
-	for(int row=0; row<4; row++){
-		for(int column=0; column<4; column++){
-			if(plateau1[row][column]!=plateau2[row][column]){
-				return false;
-			}
-		}
-	}
-	return true;
-}
-
-
 /** génère un Plateau de dimensions 4*4 ne contenant que des 0
  *  @return un Plateau vide
  **/
@@ -43,7 +31,7 @@ Plateau plateauVide(){
 	return pvide;
 }
 
-Plateau nouvelleTuile(Plateau plateau){
+static Plateau nouvelleTuile(Plateau plateau){
 	int v = tireDeuxOuQuatre();
 	int i = rand() % 4;
 	int j = rand() % 4;
@@ -67,7 +55,7 @@ Plateau plateauInitial(){
 }
 
 
-Plateau flippe90TrigPlus(Plateau plateau){
+static Plateau flippe90TrigPlus(Plateau plateau){
 	Plateau flippedPlateau = plateauVide();
 	for(int row=0; row<4;row++){
 		for(int column=0; column<4; column++){
@@ -82,7 +70,7 @@ Plateau flippe90TrigPlus(Plateau plateau){
  *  @param plateau le Plateau
  *  @return le Plateau une fois déplacé vers la gauche
  **/
-vector<int> collapseRowLeft(vector<int> row){
+static vector<int> collapseRowLeft(vector<int> row){
 	vector<int> nrow = vector<int>(4);
 	int count=0;
 	for (int column=0; column<4; column++){
@@ -97,7 +85,7 @@ vector<int> collapseRowLeft(vector<int> row){
 	}
 	return nrow;
 }
-vector<int> mergeRowLeft(vector<int> row){
+static vector<int> mergeRowLeft(vector<int> row){
 	vector<int> nrow = vector<int>(4);
 	int count=0;
 	for (int column=0; column<4; column++){
@@ -165,21 +153,26 @@ Plateau deplacementBas(Plateau plateau){
  *  @return le Plateau déplacé dans la direction
  **/
 Plateau deplacement(Plateau plateau, int direction){
-	Plateau auxPlateau = plateauVide();
-	if(direction==0){
-		auxPlateau = deplacementDroite(plateau);
+	Plateau auxPlateau;
+	switch (direction){
+		case 0:
+			auxPlateau = deplacementDroite(plateau);
+			break;
+		case 1:
+			auxPlateau = deplacementHaut(plateau);
+			break;
+		case 2:
+			auxPlateau = deplacementGauche(plateau);
+			break;
+		case 3:
+			auxPlateau = deplacementBas(plateau);
+			break;
+		// default:
+		// 	cerr << "Deplacement non-autorise!" << endl;
+		// 	exit(-1);
 	}
-	if(direction==1){
-		auxPlateau = deplacementHaut(plateau);
-	}
-	if(direction==2){
-		auxPlateau = deplacementGauche(plateau);
-	}
-	if(direction==3){
-		auxPlateau = deplacementBas(plateau);
-	}
-	if (comparePlateaux(auxPlateau,plateau)){
-		throw "mouvement invalide";
+	if (auxPlateau==plateau){
+		throw invalid_argument("mouvement invalide");
 	}
 	else{
 		return nouvelleTuile(auxPlateau);
@@ -190,16 +183,61 @@ Plateau deplacement(Plateau plateau, int direction){
 /** affiche un Plateau
  * @param p le Plateau
  **/
-string dessine(Plateau p);
+string dessine(Plateau p){
+	string aDessiner = 	"*************************\n*";
+	for(int i=0; i<4; i++){
+		for(int j=0; j<4; j++){
+			if (p[i][j]==0){
+				aDessiner += "     *";
+			}
+			else if(p[i][j]<10){
+				aDessiner += "  "+ to_string(p[i][j]) + "  *";
+			}
+			else if(p[i][j]<100){
+				aDessiner += " " + to_string(p[i][j]) + "  *";
+			}
+			else if(p[i][j]<1000){
+				aDessiner += " " + to_string(p[i][j]) + " *";
+			}
+			else{
+				aDessiner += "" + to_string(p[i][j]) + " *";
+			}
+			// aDessiner += to_string(p[i][j]) + " ";
+		}
+		if (i!=3){
+			aDessiner += "\n*************************\n*";
+		}else{
+			aDessiner += "\n*************************\n";
+		}
+	}
+	return aDessiner;
+}
+
 
 /** permet de savoir si une partie est terminée
  *  @param plateau un Plateau
  *  @return true si le plateau est vide, false sinon
  **/
-bool estTermine(Plateau plateau);
+bool estTermine(Plateau plateau){
+	Plateau p = plateau;
+	if(deplacementDroite(p)==p && deplacementHaut(p)==p && deplacementGauche(p)==p && deplacementBas(p)==p){
+		return true;
+	}
+	return false;
+}
+
 
 /** permet de savoir si une partie est gagnée
  * @param plateau un Plateau
  * @return true si le plateau contient un 2048, false sinon
  **/
-bool estGagnant(Plateau plateau);
+bool estGagnant(Plateau plateau){
+	for(int row=0; row<4; row++){
+		for(int column=0; column<4; column++){
+			if(plateau[row][column]==2048){
+				return true;
+			}
+		}
+	}
+	return false;
+}

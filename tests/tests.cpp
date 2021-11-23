@@ -6,20 +6,8 @@
 using namespace std;
 
 
-#include <unistd.h>
+// #include <unistd.h>
 
-
-
-typedef vector<vector<int>> Plateau;
-
-void dispPlateau(Plateau plateau){
-	for(int i=0; i<4; i++){
-		for(int j=0; j<4; j++){
-			cout << plateau[i][j] << " ";
-		}
-		cout << endl;
-	}
-}
 
 
 
@@ -38,12 +26,19 @@ int main(){
 	};
 
 	Plateau test2Plateau = {
-		{4,8,2,8},
-		{2,4,8,2},
-		{2,4,2,4},
-		{4,2,4,2}
+		{0,0,0,4},
+		{8,0,4,2},
+		{0,4,8,2},
+		{16,2,2,3}
+	};
+
+	Plateau test3Plateau = {
+		{0,0,0,0},
+		{0,0,0,0},
+		{0,0,0,0},
+		{0,0,2048,0}
 	};
 
 	srand((unsigned) time(0));
-	dispPlateau(deplacement(test2Plateau, 3));
+	cout << dessine(deplacement(testPlateau, 2)) << endl;
 }
