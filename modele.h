@@ -59,15 +59,12 @@ Plateau deplacementHaut(Plateau plateau);
 Plateau deplacementBas(Plateau plateau);
 
 
-
-
-
 /** déplace les tuiles d'un Plateau dans la direction donnée et génère une nouvelle tuile si le déplacement est valide
  *  @param plateau le Plateau
  *  @param direction la direction 0 droite 1 Haut 2 Gauche 3 Bas
  *  @return le Plateau déplacé dans la direction
  **/
-Plateau deplacement(Plateau plateau, int direction);
+Plateau deplacement(Plateau plateau, int direction, bool tuile);
 
 
 /** affiche un Plateau
@@ -82,13 +79,24 @@ string dessine(Plateau p);
  **/
 bool estTermine(Plateau plateau);
 
-
 /** permet de savoir si une partie est gagnée
  * @param plateau un Plateau
  * @return true si le plateau contient un 2048, false sinon
  **/
 bool estGagnant(Plateau plateau);
 
-static int log2(int n);
-// static int abs(int n);
-int score(Plateau pavant, Plateau papres, int deplacement);
+
+static int count(Plateau plateau, int powerof2);
+
+int score(int score_avant, Plateau avant, int ideplacement);
+
+
+
+char input_dhgb();
+
+int ideplacement_dhgb(char dhgb);
+
+
+
+
+void jeu();

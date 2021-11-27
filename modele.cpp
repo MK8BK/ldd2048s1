@@ -149,7 +149,7 @@ Plateau deplacementBas(Plateau plateau){
  *  @param direction la direction 0 droite 1 Haut 2 Gauche 3 Bas
  *  @return le Plateau déplacé dans la direction
  **/
-Plateau deplacement(Plateau plateau, int direction){
+Plateau deplacement(Plateau plateau, int direction, bool tuile){
 	Plateau auxPlateau;
 	switch (direction){
 		case 0:
@@ -164,15 +164,17 @@ Plateau deplacement(Plateau plateau, int direction){
 		case 3:
 			auxPlateau = deplacementBas(plateau);
 			break;
-		default:
-			cerr << "Deplacement non-autorise!" << endl;
-			exit(-1);
 	}
 	if (auxPlateau==plateau){
 		throw invalid_argument("Mouvement Invalide!");
 	}
 	else{
+		if(tuile){
 		return nouvelleTuile(auxPlateau);
+		}
+		else{
+			return auxPlateau;
+		}
 	}
 }
 
@@ -181,30 +183,35 @@ Plateau deplacement(Plateau plateau, int direction){
  * @param p le Plateau
  **/
 string dessine(Plateau p){
-	string aDessiner = 	"*************************\n*";
+	string aDessiner = 	"*****************************\n*";
 	for(int i=0; i<4; i++){
 		for(int j=0; j<4; j++){
 			if (p[i][j]==0){
-				aDessiner += "     *";
+				aDessiner += "      *";
 			}
 			else if(p[i][j]<10){
-				aDessiner += "  "+ to_string(p[i][j]) + "  *";
+				aDessiner += "  "+ to_string(p[i][j]) + "   *";
 			}
 			else if(p[i][j]<100){
-				aDessiner += " " + to_string(p[i][j]) + "  *";
+				aDessiner += "  " + to_string(p[i][j]) + "  *";
 			}
 			else if(p[i][j]<1000){
+				aDessiner += " " + to_string(p[i][j]) + "  *";
+			}
+			else if (p[i][j]<10000){
 				aDessiner += " " + to_string(p[i][j]) + " *";
 			}
-			else{
+			else if (p[i][j]<100000){
 				aDessiner += "" + to_string(p[i][j]) + " *";
 			}
-			// aDessiner += to_string(p[i][j]) + " ";
+			else{
+				aDessiner += "" + to_string(p[i][j]) + "*";
+			}
 		}
 		if (i!=3){
-			aDessiner += "\n*************************\n*";
+			aDessiner += "\n*****************************\n*";
 		}else{
-			aDessiner += "\n*************************\n";
+			aDessiner += "\n*****************************\n";
 		}
 	}
 	return aDessiner;
@@ -240,65 +247,95 @@ bool estGagnant(Plateau plateau){
 }
 
 
-static int log2(int n){
-	int count=1;
-	int nn = n;
-	while(nn!=2){
-		nn = nn / 2;
-		count++;
-	}
-	return count;
-}
 
-int abs(int n){
-	if(n>=0){
-		return n;
-	}
-	return -n;
-}
-
-int score(int score_avant, Plateau avant, int deplacement){
-	Plateau apres;
-	switch (deplacement){
-	case 0:
-		apres = deplacementDroite(avant);
-		break;
-	case 1:
-		apres = deplacementHaut(avant);
-		break;
-	case 2:
-		apres = deplacementGauche(avant);
-		break;
-	case 3:
-		apres = deplacementBas(avant);
-		break;
-	}
-	vector<vector<int>> avant_apres= vector<vector<int>>(17);
-	for(int i=0; i<17; i++){
-		avant_apres[i]=vector<int>(2);
-		avant_apres[i]={0,0};
-	}
-	for(int row=0; row<4;row++){
+static int count(Plateau plateau, int powerof2){
+	int sum = 0;
+	for(int row=0; row<4; row++){
 		for(int column=0; column<4; column++){
-			if(avant[row][column]!=0){
-				avant_apres[log2(avant[row][column])][0] == avant_apres[log2(avant[row][column])][0]+1;
-			}
-			if(apres[row][column]!=0){
-				avant_apres[log2(apres[row][column])][1] == avant_apres[log2(avant[row][column])][1]+1;
+			if(plateau[row][column]==powerof2){
+				sum++;
 			}
 		}
 	}
-	int somme=0;
-	int c = 1;
-	for(int i=0; i<17; i++){
-		c = c * 2;
-		if (abs(avant_apres[i][1]-avant_apres[i][0])==(avant_apres[i][1]-avant_apres[i][0]) and (avant_apres[i][1]-avant_apres[i][0]!= 0)){
-			score = score + abs(avant_apres[i][1]-avant_apres[i][0])*c;
-		}
-		if (abs(avant_apres[i][1]-avant_apres[i][0])>(avant_apres[i][1]-avant_apres[i][0]) and (avant_apres[i][1]-avant_apres[i][0]!= 0)){
-			score = score + abs(avant_apres[i][1]-avant_apres[i][0])*c*2;
+	return sum;
+}
+
+int score(int score_avant, Plateau avant, int ideplacement){
+	Plateau apres;
+	apres = deplacement(avant, ideplacement, false);
+	int nscore=score_avant;
+	vector<vector<int>> avant_freq= {{2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072},
+	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
+	vector<vector<int>> apres_freq= avant_freq;
+	for(int column=0; column<17; column++){
+		avant_freq[1][column]=count(avant, avant_freq[0][column]);
+		apres_freq[1][column]=count(apres, apres_freq[0][column]);
+		if(apres_freq[1][column]>avant_freq[1][column]){
+			nscore += avant_freq[0][column]*(apres_freq[1][column]-avant_freq[1][column]);
 		}
 	}
-	return score;
-	
+	return nscore;
+}
+
+char input_dhgb(){
+	char output;
+
+	cout<<"Entrer commande:";
+	cin >> output;
+	output = toupper(output);
+	if(output!='D' && output!='H' && output!='G' && output!='B'){
+		throw invalid_argument("Deplacement non-autorise!");
+	}	
+	return output;
+}
+
+
+
+int ideplacement_dhgb(char dhgb){
+	switch (dhgb){
+		case 'D':
+			return 0;
+			break;
+		case 'H':
+			return 1;
+			break;
+		case 'G':
+			return 2;
+			break;
+		case 'B':
+			return 3;
+			break;
+		default:
+			throw invalid_argument("if this appears, run!");
+		}
+}
+
+
+void jeu(){
+	srand((unsigned) time(0));
+	int game_score = 0;
+	Plateau plateau = plateauInitial();
+	Plateau plateau_next = plateauVide();
+	while(true){
+		cout << dessine(plateau)<<endl;
+		try{
+			int deplacement_id = ideplacement_dhgb(input_dhgb());
+			plateau_next = deplacement(plateau, deplacement_id, true);
+			game_score = score(game_score, plateau, deplacement_id);
+			plateau = plateau_next;
+			if(estGagnant(plateau)){
+				cout << dessine(plateau_next) << endl;
+				cout << "Vous avez Gagne!"<<endl;
+				return;
+			}else if(estTermine(plateau)){
+				cout << dessine(plateau_next) << endl;
+				cout << "Vous avez Perdu!"<<endl;
+				return;
+			}
+		}catch(invalid_argument e){
+
+			cout << endl << e.what() << endl;
+			continue;
+		}
+	}
 }

@@ -4,11 +4,11 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.10.3
+    jupytext_version: 1.13.1
 kernelspec:
-  display_name: C++17
-  language: C++17
-  name: xcpp17
+  display_name: Python 3 (ipykernel)
+  language: python
+  name: python3
 ---
 
 # Rapport de projet
@@ -67,7 +67,7 @@ travail. Inutile de perdre du temps sur le premier programme si vous
 avez fait les suivants plus compliqués; l'auditeur se doutera bien que
 vous avez réussi à le faire.*
 
-```{code-cell}
+```{code-cell} ipython3
 ! info-111 g++ 2048.cpp -o 2048
 ```
 
