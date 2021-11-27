@@ -323,13 +323,16 @@ void jeu(){
 			plateau_next = deplacement(plateau, deplacement_id, true);
 			game_score = score(game_score, plateau, deplacement_id);
 			plateau = plateau_next;
+			cout << "score:"<<game_score<<endl;
 			if(estGagnant(plateau)){
 				cout << dessine(plateau_next) << endl;
 				cout << "Vous avez Gagne!"<<endl;
+				cout << "score:"<<game_score<<endl;
 				return;
 			}else if(estTermine(plateau)){
 				cout << dessine(plateau_next) << endl;
 				cout << "Vous avez Perdu!"<<endl;
+				cout << "score:"<<game_score<<endl;
 				return;
 			}
 		}catch(invalid_argument e){
