@@ -2,7 +2,10 @@
 #include <iostream>
 #include <cstdlib> 
 #include <time.h>
+#include <tuple>
 using namespace std;
+
+
 typedef vector<vector<int>> Plateau;
 /** Des fonctions peuvent être ajoutés à ce fichier si besoin est (fonctions pour mettre à jour le score par exemple)
  * //
@@ -64,13 +67,16 @@ Plateau deplacementBas(Plateau plateau);
  *  @param direction la direction 0 droite 1 Haut 2 Gauche 3 Bas
  *  @return le Plateau déplacé dans la direction
  **/
-Plateau deplacement(Plateau plateau, int direction, bool tuile);
+Plateau deplacement(Plateau plateau, int direction, bool tuile=true);
 
 
+
+
+void dessine_string_couleur(string txt, tuple<int, int, int> color);
 /** affiche un Plateau
  * @param p le Plateau
  **/
-string dessine(Plateau p);
+void dessine(Plateau p);
 
 
 /** permet de savoir si une partie est terminée
@@ -98,5 +104,6 @@ int ideplacement_dhgb(char dhgb);
 
 
 
-
-void jeu();
+//half-done, continue after emergency git versions management 
+//commented due to merge errors, requires changing the dessine() function to accomodate for colored output to terminal
+// void jeu();

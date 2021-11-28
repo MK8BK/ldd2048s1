@@ -2,7 +2,10 @@
 #include <iostream>
 #include <cstdlib> 
 #include <time.h>
+#include <fstream>
+#include <tuple>
 using namespace std;
+
 typedef vector<vector<int>> Plateau;
 /** Des fonctions peuvent être ajoutés à ce fichier si besoin est (fonctions pour mettre à jour le score par exemple)
  * //
@@ -87,7 +90,7 @@ bool estGagnant(Plateau plateau);
 
 
 static int count(Plateau plateau, int powerof2);
-//half-done, continue after emergency git versions management(concerning this function)
+
 int score(int score_avant, Plateau avant, int ideplacement);
 
 
@@ -98,5 +101,25 @@ int ideplacement_dhgb(char dhgb);
 
 
 
+//half-done, continue after emergency git versions management
+//temporarily commented, will soon be deleted, no need for the AI, just awaiting the completion and successful compilation 
+//  of ia_tester.cpp
+// void jeu();
 
-void jeu();
+
+
+
+tuple<int, int, Plateau> read_configuration(string path);
+
+tuple<int, int, Plateau> read_updated_configuration(int iteration, string path);
+
+
+void write_mouvement(string path, int iteration, char mouvement);
+
+int calc_empty(Plateau plateau);
+
+tuple<int, vector<int>> maxpos(Plateau plateau);
+
+int sum(vector<int> row_or_column);
+tuple<char, vector<int>> maxedge(Plateau plateau);
+//half-done, continue after emergency git versions management

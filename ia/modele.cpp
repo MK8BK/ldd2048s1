@@ -3,9 +3,12 @@
 #include <cstdlib> 
 #include <time.h>
 #include "modele.h"
+#include <fstream>
 #include <tuple>
-#include <ncurses.h>
 using namespace std;
+
+
+
 
 
 typedef vector<vector<int>>Plateau;
@@ -151,7 +154,7 @@ Plateau deplacementBas(Plateau plateau){
  *  @param direction la direction 0 droite 1 Haut 2 Gauche 3 Bas
  *  @return le Plateau déplacé dans la direction
  **/
-Plateau deplacement(Plateau plateau, int direction, bool tuile=true){
+Plateau deplacement(Plateau plateau, int direction, bool tuile){
 	Plateau auxPlateau;
 	switch (direction){
 		case 0:
@@ -181,24 +184,10 @@ Plateau deplacement(Plateau plateau, int direction, bool tuile=true){
 }
 
 
-
-void dessine_string_couleur(string txt, tuple<int, int, int> color){
-	initscr();
-	const char * str = txt.c_str();
-	start_color();
-	init_color(COLOR_BLACK, 120, 111, 87);
-	init_color(COLOR_RED, get<0>(color), get<1>(color), get<2>(color));
-	init_pair(1, COLOR_RED,COLOR_BLACK);
-	attron(COLOR_PAIR(1));
-	printw(str);
-	attroff(COLOR_PAIR(1));
-	refresh();
-}
-
 /** affiche un Plateau
  * @param p le Plateau
  **/
-void dessine(Plateau p){
+string dessine(Plateau p){
 	string aDessiner = 	"*****************************\n*";
 	for(int i=0; i<4; i++){
 		for(int j=0; j<4; j++){
@@ -230,7 +219,7 @@ void dessine(Plateau p){
 			aDessiner += "\n*****************************\n";
 		}
 	}
-	// return aDessiner;
+	return aDessiner;
 }
 
 
@@ -238,7 +227,7 @@ void dessine(Plateau p){
  *  @param plateau un Plateau
  *  @return true si le plateau est vide, false sinon
  **/
-bool estTermine(Plateau plateau){
+bool estPerdant(Plateau plateau){
 	Plateau p = plateau;
 	if(deplacementDroite(p)==p && deplacementHaut(p)==p && deplacementGauche(p)==p && deplacementBas(p)==p){
 		return true;
@@ -278,9 +267,6 @@ static int count(Plateau plateau, int powerof2){
 
 
 
-
-
-//earlier implementation
 int score(int score_avant, Plateau avant, int ideplacement){
 	Plateau apres;
 	apres = deplacement(avant, ideplacement, false);
@@ -299,7 +285,6 @@ int score(int score_avant, Plateau avant, int ideplacement){
 }
 
 
-//later ncurses arrows
 char input_dhgb(){
 	char output;
 
@@ -313,7 +298,7 @@ char input_dhgb(){
 }
 
 
-//later ncurses arrows
+
 int ideplacement_dhgb(char dhgb){
 	switch (dhgb){
 		case 'D':
@@ -333,40 +318,128 @@ int ideplacement_dhgb(char dhgb){
 		}
 }
 
+//temporarily commented to test te AI, will probably soon be deleted
+// void jeu(){
+// 	srand((unsigned) time(0));
+// 	int game_score = 0;
+// 	Plateau plateau = plateauInitial();
+// 	Plateau plateau_next = plateauVide();
+// 	while(true){
+// 		cout << dessine(plateau)<< "score:" <<game_score<<endl;
+// 		try{
+// 			int deplacement_id = ideplacement_dhgb(input_dhgb());
+// 			plateau_next = deplacement(plateau, deplacement_id, true);
+// 			game_score = score(game_score, plateau, deplacement_id);
+// 			plateau = plateau_next;
+// 			if(estGagnant(plateau)){
+// 				cout << dessine(plateau_next) << endl;
+// 				cout << "Vous avez Gagne!"<<endl;
+// 				return;
+// 			}else if(estPerdant(plateau)){
+// 				cout << dessine(plateau_next) << endl;
+// 				cout << "Vous avez Perdu!"<<endl;
+// 				return;
+// 			}
+// 		}catch(invalid_argument e){
+
+// 			cout << e.what() << endl;
+// 			continue;
+// 		}
+// 	}
+// }
 
 
+tuple<int, int, Plateau> read_configuration(string path){
+	Plateau plateau = plateauVide();
+	ifstream file;
+	file.open(path);
+	int iteration;
+	int score;
+	file >> iteration;
+	file >> score;
+	string v0;
+	string v1;
+	string v2;
+	string v3;
+	int i=0;
+	while (getline(file, v0,',')){
+		getline(file, v1, ',');
+		getline(file, v2, ',');
+		getline(file, v3, ';');
+		plateau[i][0]=stoi(v0);
+		plateau[i][1]=stoi(v1);
+		plateau[i][2]=stoi(v2);
+		plateau[i][3]=stoi(v3);
+		i++;
+	}
+	file.close();
+	tuple<int, int, Plateau> tup(iteration, score, plateau);
+	return tup;
+}
+
+tuple<int, int, Plateau> read_updated_configuration(int iteration, string path){
+	while(get<0>(read_configuration(path))==iteration){
+		continue;
+	}
+	tuple<int, int, Plateau> tup = read_configuration(path);
+	return tup;
+}
 
 
+void write_mouvement(string path, int iteration, char mouvement){
+	ofstream file;
+	file.open(path, ios::app);
+	if(iteration==0){
+		file << "MIP" << endl;
+	}
+	file << to_string(iteration) << " " << mouvement << endl;
+	file.close();
+}
 
-//half-done, continue after emergency git versions management 
-//temporarily commented for testing color purposes, dessine() function parameter change;
-//commented due to merge errors, requires changing the dessine() function to accomodate for colored output to terminal
-//void jeu(){
-//	srand((unsigned) time(0));
-//	int game_score = 0;
-//	Plateau plateau = plateauInitial();
-//	Plateau plateau_next = plateauVide();
-//	while(true){
-//		cout << dessine(plateau)<< "score:" <<game_score<<endl;
-//		try{
-//			int deplacement_id = ideplacement_dhgb(input_dhgb());
-//			plateau_next = deplacement(plateau, deplacement_id, true);
-//			game_score = score(game_score, plateau, deplacement_id);
-//			plateau = plateau_next;
-//			if(estGagnant(plateau)){
-//				cout << dessine(plateau_next) << endl;
-//				cout << "Vous avez Gagne!"<<endl;
-//				return;
-//			}else if(estTermine(plateau)){
-//				cout << dessine(plateau_next) << endl;
-//				cout << "Vous avez Perdu!"<<endl;
-//				return;
-//			}
-//			system("clear");
-//		}catch(invalid_argument e){
-//			system("clear");
-//			cout << e.what() << endl;
-//			continue;
-//		}
-//	}
-//}
+int calc_empty(Plateau plateau){
+	int sum=0;
+	for(int row=0; row<4; row++){
+		for(int column=0; column<4; column++){
+			if(plateau[row][column]==0){
+				sum++;
+			}
+		}
+	}
+	return sum;
+}
+
+tuple<int, vector<int>> maxpos(Plateau plateau){
+	tuple<int, vector<int>> m;
+	int max=0;
+	vector<int> maxi = vector<int>(2);
+	for(int row=0; row<4; row++){
+		for(int column=0; column<4; column++){
+			if(plateau[row][column]>max){
+				max = plateau[row][column];
+				maxi = {row, column};
+			}
+		}
+	}
+	if(count(plateau, max)>1){
+		throw "Two maximums, it's not going well!";
+	}
+	m = make_tuple(max, maxi);
+	return m;
+}
+
+
+int sum(vector<int> row_or_column){
+	int sum=0;
+	for(int i=0; i<4; i++){
+			sum+=row_or_column[i];
+	}	
+	return sum;
+}
+
+
+tuple<char, vector<int>> maxedge(Plateau plateau){
+	char vh;
+	vector<int> max_vector=vector<int>(4);
+	//half-done, continue after emergency git versions management
+		
+}
