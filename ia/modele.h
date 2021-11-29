@@ -80,7 +80,7 @@ string dessine(Plateau p);
  *  @param plateau un Plateau
  *  @return true si le plateau est vide, false sinon
  **/
-bool estTermine(Plateau plateau);
+bool estPerdant(Plateau plateau);
 
 /** permet de savoir si une partie est gagnée
  * @param plateau un Plateau
@@ -116,10 +116,18 @@ tuple<int, int, Plateau> read_updated_configuration(int iteration, string path);
 
 void write_mouvement(string path, int iteration, char mouvement);
 
+tuple<int, char> read_mouvement(string path);
+tuple<int, char> read_updated_mouvement(string path, int iteration);
+void write_new_config(string path, int iteration, int game_score, Plateau plateau);
+
+
 int calc_empty(Plateau plateau);
 
 tuple<int, vector<int>> maxpos(Plateau plateau);
 
 int sum(vector<int> row_or_column);
-tuple<char, vector<int>> maxedge(Plateau plateau);
+// tuple<char, vector<int>> maxedge(Plateau plateau);
 //half-done, continue after emergency git versions management
+
+int eval_move(Plateau p, char move);
+void ai_answer(string config_path, string move_path, int iteration);

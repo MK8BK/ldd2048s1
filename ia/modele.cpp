@@ -388,13 +388,58 @@ tuple<int, int, Plateau> read_updated_configuration(int iteration, string path){
 
 void write_mouvement(string path, int iteration, char mouvement){
 	ofstream file;
-	file.open(path, ios::app);
 	if(iteration==0){
+		file.open(path);
 		file << "MIP" << endl;
+	}
+	else{
+		file.open(path, ios::app);
 	}
 	file << to_string(iteration) << " " << mouvement << endl;
 	file.close();
 }
+
+
+tuple<int, char> read_mouvement(string path){
+	ifstream mouvements_file;
+	mouvements_file.open(path);
+	int iteration;
+	string c;
+	mouvements_file >> c;
+	while(mouvements_file.good()){
+		mouvements_file >> iteration;
+		mouvements_file >> c;
+	}
+	mouvements_file.close();
+	char rc = c[0];
+	tuple<int, char> tup = make_tuple(iteration, rc);
+	return tup;
+}
+
+tuple<int, char> read_updated_mouvement(string path, int iteration){
+	while(get<0>(read_mouvement(path))==iteration){
+		continue;
+	}
+	return(read_mouvement(path));
+}
+
+
+void write_new_config(string path, int iteration, int game_score, Plateau plateau){
+	ofstream configuration;
+	configuration.open(path);
+	configuration << iteration << " "<< game_score << endl;
+	for(int row=0; row<4; row++){
+		configuration <<plateau[row][0]<<","<<plateau[row][1]<<","
+			<<plateau[row][2]<<","<<plateau[row][3]<<";";
+		if(row!=3){
+			configuration << endl;
+		}
+	}
+	configuration.close();
+}
+
+
+
 
 int calc_empty(Plateau plateau){
 	int sum=0;
@@ -437,9 +482,49 @@ int sum(vector<int> row_or_column){
 }
 
 
-tuple<char, vector<int>> maxedge(Plateau plateau){
-	char vh;
-	vector<int> max_vector=vector<int>(4);
-	//half-done, continue after emergency git versions management
+
+
+
+
+//half-done, continue after emergency git versions management
+// tuple<char, vector<int>> maxedge(Plateau plateau){
+// 	char vh;
+// 	vector<int> max_vector=vector<int>(4);
+// 	
 		
+// }
+
+
+
+//the final ai does not work yet, saving for later
+int eval_move(Plateau p, char move){
+	if(deplacement(p,ideplacement_dhgb(move),false)==p || estPerdant(deplacement(p,ideplacement_dhgb(move), true))){
+		return 0;
+	}
+	int favor=0;
+	if(get<1>(maxpos(p))==get<1>(maxpos(deplacement(p,ideplacement_dhgb(move),false)))){
+		favor+=50;
+	}
+	favor += 5*calc_empty(deplacement(p,ideplacement_dhgb(move),true));
+	return favor;
+}
+
+void ai_answer(string config_path, string move_path, int iteration){
+	Plateau p = get<2>(read_updated_configuration(iteration,move_path));
+	Plateau np;
+	int choice = rand() % 4;
+	vector<char> moves = {'H','B','G','D'};
+	vector<int> move_favors = vector<int>(4);
+	char maxm;
+	int maxi=0;
+	for(int i=0; i<4; i++){
+		move_favors[i] = eval_move(p, moves[i]);
+		cout << to_string(move_favors[i]) << moves[i]<<endl;
+		if(move_favors[i]>maxi){
+			maxi = move_favors[i];
+			maxm = moves[i];
+		}
+	}
+	
+	write_mouvement(move_path, iteration, maxm);
 }
