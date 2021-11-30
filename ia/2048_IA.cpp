@@ -13,12 +13,32 @@ typedef vector<vector<int>> Plateau;
 //half-done, continue after emergency git versions management
 
 int main(){
-	string pathin="configuration.txt";
-	string pathout="mouvements.txt";
-	char move = 'B';
-	int iteration = get<0>(read_configuration(pathin));
-	int score = get<1>(read_configuration(pathin));
-	Plateau p = get<2>(read_configuration(pathin));
+	string pathin="../archive/tournois/configuration.txt";
+	string pathout="../archive/tournois/mouvements.txt";
+	int iteration;
+	int game_score;
+	Plateau p;
+	// char move;
+	while(true){
+		iteration = get<0>(read_configuration(pathin));
+		game_score = get<1>(read_configuration(pathin));
+		p = get<2>(read_configuration(pathin));
+		ai_answer(pathin, pathout, iteration);
+		iteration++;
+	}
+	// Plateau p = {{4,2,4,2},
+	// 			 {2,4,2,4},
+	// 			 {4,8,16,2},
+	// 			 {32,64,16,4}};
+	// int gauche = eval_move(p, 'G');
+	// int haut = eval_move(p, 'H');
+	// int droite = eval_move(p, 'D');
+	// int bas = eval_move(p, 'B');
+	// cout << to_string(gauche)<<endl;
+	// cout << to_string(haut)<<endl;
+	// cout << to_string(droite)<<endl;
+	// cout << to_string(bas)<<endl;
+
 	// write_mouvement(pathout, iteration, move);
 	
 

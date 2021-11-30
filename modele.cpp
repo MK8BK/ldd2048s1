@@ -1,3 +1,4 @@
+//!!!new function implementations at ./12/
 #include <vector>
 #include <iostream>
 #include <cstdlib> 

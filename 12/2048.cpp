@@ -16,4 +16,5 @@ typedef vector<vector<int>> Plateau;
 int main(){
 
 	jeu();
+	// cout << input_dhgb() <<endl;
 }

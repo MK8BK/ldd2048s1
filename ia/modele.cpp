@@ -267,6 +267,25 @@ static int count(Plateau plateau, int powerof2){
 
 
 
+// int score(int score_avant, Plateau avant, int ideplacement){
+// 	Plateau apres;
+// 	apres = deplacement(avant, ideplacement, false);
+// 	int nscore=score_avant;
+// 	vector<vector<int>> avant_freq= {{2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072},
+// 	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
+// 	vector<vector<int>> apres_freq= avant_freq;
+// 	for(int column=0; column<17; column++){
+// 		avant_freq[1][column]=count(avant, avant_freq[0][column]);
+// 		apres_freq[1][column]=count(apres, apres_freq[0][column]);
+// 		if(apres_freq[1][column]>avant_freq[1][column]){
+// 			nscore += avant_freq[0][column]*(apres_freq[1][column]-avant_freq[1][column]);
+// 		}
+// 	}
+// 	return nscore;
+// }
+
+
+
 int score(int score_avant, Plateau avant, int ideplacement){
 	Plateau apres;
 	apres = deplacement(avant, ideplacement, false);
@@ -277,8 +296,13 @@ int score(int score_avant, Plateau avant, int ideplacement){
 	for(int column=0; column<17; column++){
 		avant_freq[1][column]=count(avant, avant_freq[0][column]);
 		apres_freq[1][column]=count(apres, apres_freq[0][column]);
+	}
+	for(int column=0; column<17; column++){
 		if(apres_freq[1][column]>avant_freq[1][column]){
 			nscore += avant_freq[0][column]*(apres_freq[1][column]-avant_freq[1][column]);
+		}
+		if(apres_freq[1][column]<avant_freq[1][column] and apres_freq[1][column + 1]==avant_freq[1][column + 1]){
+			nscore = nscore + avant_freq[0][column]*(avant_freq[1][column]-apres_freq[1][column]);
 		}
 	}
 	return nscore;
@@ -312,6 +336,9 @@ int ideplacement_dhgb(char dhgb){
 			break;
 		case 'B':
 			return 3;
+			break;
+		case 'Q':
+			return -1;
 			break;
 		default:
 			throw invalid_argument("if this appears, run!");
@@ -473,6 +500,12 @@ tuple<int, vector<int>> maxpos(Plateau plateau){
 }
 
 
+//@pablo-chulilla
+int log2(int powerof2){
+	return 0;
+}
+
+
 int sum(vector<int> row_or_column){
 	int sum=0;
 	for(int i=0; i<4; i++){
@@ -497,17 +530,59 @@ int sum(vector<int> row_or_column){
 
 
 //the final ai does not work yet, saving for later
-int eval_move(Plateau p, char move){
-	if(deplacement(p,ideplacement_dhgb(move),false)==p || estPerdant(deplacement(p,ideplacement_dhgb(move), true))){
+int eval_move(Plateau p, char move, vector<int> weights){
+	try{
+		deplacement(p,ideplacement_dhgb(move),false);
+	}catch(invalid_argument e){
 		return 0;
 	}
-	int favor=0;
-	if(get<1>(maxpos(p))==get<1>(maxpos(deplacement(p,ideplacement_dhgb(move),false)))){
-		favor+=50;
+
+	if(estPerdant(deplacement(p,ideplacement_dhgb(move), true))){
+		return 0;
 	}
-	favor += 5*calc_empty(deplacement(p,ideplacement_dhgb(move),true));
+
+
+
+	int w1, w2, w3, w4, w5, w6, w7, w8, w9, w10;
+	w1, w2, w3 = weights[0], weights[1], weights[2];
+	w4, w5, w6 = weights[3], weights[4], weights[5];
+	w7, w8, w9 = weights[6], weights[7], weights[8];
+	w10 = weights[9];
+
+	Plateau np = deplacement(p,ideplacement_dhgb(move),false);
+	int favor=0;
+
+	//max pos change
+	if(get<1>(maxpos(np))==get<1>(maxpos(p))){
+		favor+=w1;
+	}
+	//max pos value change favor
+	if(get<0>(maxpos(np))>get<0>(maxpos(p))){
+		favor+=w2*(log2(get<0>(maxpos(np))) - log2(get<0>(maxpos(p)) ));
+	}
+	
+	
+	//max edge change favor
+	//max half edge change favor
+	//max edge decroissance favor
+	//max half edge decroissance favor
+
+	//adjacency favor
+	//empty favor
+	if(calc_empty(p)<calc_empty(np)){
+		favor += (calc_empty(np)-calc_empty(p))*w8;
+	}
+	//max score favor
+	int game_score = 0;
+	int ngame_score = score(game_score, p,)
+	if()
+	//compactness favor
+
 	return favor;
 }
+
+
+
 
 void ai_answer(string config_path, string move_path, int iteration){
 	Plateau p = get<2>(read_updated_configuration(iteration,move_path));
@@ -515,8 +590,8 @@ void ai_answer(string config_path, string move_path, int iteration){
 	int choice = rand() % 4;
 	vector<char> moves = {'H','B','G','D'};
 	vector<int> move_favors = vector<int>(4);
-	char maxm;
-	int maxi=0;
+	char maxm=moves[0];
+	int maxi=-1;
 	for(int i=0; i<4; i++){
 		move_favors[i] = eval_move(p, moves[i]);
 		cout << to_string(move_favors[i]) << moves[i]<<endl;

@@ -90,7 +90,7 @@ bool estGagnant(Plateau plateau);
 
 
 static int count(Plateau plateau, int powerof2);
-
+int log2(int powerof2);
 int score(int score_avant, Plateau avant, int ideplacement);
 
 

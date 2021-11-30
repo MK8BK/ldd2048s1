@@ -183,7 +183,7 @@ Plateau deplacement(Plateau plateau, int direction, bool tuile){
  * @param p le Plateau
  **/
 string dessine(Plateau p){
-	string aDessiner = 	"*****************************\n*";
+	string aDessiner = 	"\n*****************************\n*";
 	for(int i=0; i<4; i++){
 		for(int j=0; j<4; j++){
 			if (p[i][j]==0){
@@ -265,26 +265,6 @@ static int count(Plateau plateau, int powerof2){
 
 //earlier implementation
 //half-done, continue after emergency git versions management (concerning this function)
-int score(int score_avant, Plateau avant, int ideplacement){
-	Plateau apres;
-	apres = deplacement(avant, ideplacement, false);
-	int nscore=score_avant;
-	vector<vector<int>> avant_freq= {{2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
-	vector<vector<int>> apres_freq= avant_freq;
-	for(int column=0; column<17; column++){
-		avant_freq[1][column]=count(avant, avant_freq[0][column]);
-		apres_freq[1][column]=count(apres, apres_freq[0][column]);
-		if(apres_freq[1][column]>avant_freq[1][column]){
-			nscore += avant_freq[0][column]*(apres_freq[1][column]-avant_freq[1][column]);
-		}
-	}
-	return nscore;
-}
-
-//new proposed implementation by @pablo-chulilla
-//still debating logic regarding the score incrementation
-
 //int score(int score_avant, Plateau avant, int ideplacement){
 //	Plateau apres;
 //	apres = deplacement(avant, ideplacement, false);
@@ -295,31 +275,60 @@ int score(int score_avant, Plateau avant, int ideplacement){
 //	for(int column=0; column<17; column++){
 //		avant_freq[1][column]=count(avant, avant_freq[0][column]);
 //		apres_freq[1][column]=count(apres, apres_freq[0][column]);
-//	}
-//	for(int column=0; column<17; column++){
 //		if(apres_freq[1][column]>avant_freq[1][column]){
 //			nscore += avant_freq[0][column]*(apres_freq[1][column]-avant_freq[1][column]);
 //		}
-//        if(apres_freq[1][column]<avant_freq[1][column] and apres_freq[1][column + 1]==avant_freq[1][column + 1]){
-//            nscore = nscore + avant_freq[0][column]*(avant_freq[1][column]-apres_freq[1][column]);
-//        }
-//    }
+//	}
 //	return nscore;
 //}
+
+//new proposed implementation by @pablo-chulilla
+//still debating logic regarding the score incrementation
+
+int score(int score_avant, Plateau avant, int ideplacement){
+	Plateau apres;
+	apres = deplacement(avant, ideplacement, false);
+	int nscore=score_avant;
+	vector<vector<int>> avant_freq= {{2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072},
+	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
+	vector<vector<int>> apres_freq= avant_freq;
+	for(int column=0; column<17; column++){
+		avant_freq[1][column]=count(avant, avant_freq[0][column]);
+		apres_freq[1][column]=count(apres, apres_freq[0][column]);
+	}
+	for(int column=0; column<17; column++){
+		if(apres_freq[1][column]>avant_freq[1][column]){
+			nscore += avant_freq[0][column]*(apres_freq[1][column]-avant_freq[1][column]);
+		}
+		if(apres_freq[1][column]<avant_freq[1][column] and apres_freq[1][column + 1]==avant_freq[1][column + 1]){
+			nscore = nscore + avant_freq[0][column]*(avant_freq[1][column]-apres_freq[1][column]);
+		}
+	}
+	return nscore;
+}
 
 
 
 
 char input_dhgb(){
-	char output;
-
+	// cin.ignore(12000,'\n');
+	string input;
 	cout<<"Entrer commande:";
-	cin >> output;
-	output = toupper(output);
-	if(output!='D' && output!='H' && output!='G' && output!='B'){
+	getline(cin, input);
+	if(input.length()!=1){
 		throw invalid_argument("Deplacement non-autorise!");
-	}	
+	}
+	char output = input[0];
+	output = toupper(output);
+	if(output!='D' && output!='H' && output!='G' && output!='B' && output!='Q'){
+		throw invalid_argument("Deplacement non-autorise!");
+	}
 	return output;
+
+	// char output = input[0];
+	// output = toupper(output);
+		
+	// return output;
 }
 
 
@@ -338,6 +347,9 @@ int ideplacement_dhgb(char dhgb){
 		case 'B':
 			return 3;
 			break;
+		case 'Q':
+			return -1;
+			break;
 		default:
 			throw invalid_argument("if this appears, run!");
 		}
@@ -350,9 +362,13 @@ void jeu(){
 	Plateau plateau = plateauInitial();
 	Plateau plateau_next = plateauVide();
 	while(true){
-		cout << dessine(plateau)<< "score:" <<game_score<<endl;
+		cout << dessine(plateau)<< endl << "score:" <<game_score<<endl;
 		try{
 			int deplacement_id = ideplacement_dhgb(input_dhgb());
+			if(deplacement_id==-1){
+				cout << "Jeu terminee" << endl;
+				return;
+			}
 			plateau_next = deplacement(plateau, deplacement_id, true);
 			game_score = score(game_score, plateau, deplacement_id);
 			plateau = plateau_next;
@@ -367,7 +383,7 @@ void jeu(){
 			}
 		}catch(invalid_argument e){
 
-			cout << e.what() << endl;
+			cout << endl << e.what() << endl;
 			continue;
 		}
 	}
