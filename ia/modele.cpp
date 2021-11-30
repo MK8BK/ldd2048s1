@@ -376,6 +376,10 @@ int ideplacement_dhgb(char dhgb){
 // }
 
 
+
+
+
+
 tuple<int, int, Plateau> read_configuration(string path){
 	Plateau plateau = plateauVide();
 	ifstream file;
@@ -468,6 +472,44 @@ void write_new_config(string path, int iteration, int game_score, Plateau platea
 
 
 
+
+
+//helper functions
+
+int count(vector<int> tableau, int valeur){
+	int sum = 0;
+	for(int row=0; row<4; row++){
+		if(tableau[row]==valeur){
+			sum++;
+		}
+	}
+	return sum;
+}
+
+int sum(vector<int> row_or_column){
+	int sum=0;
+	for(int i=0; i<4; i++){
+			sum+=row_or_column[i];
+	}	
+	return sum;
+}
+
+
+//@pablo-chulilla
+int log2(int powerof2){
+	int ref = powerof2;
+	int l = 0;
+	while(ref>1){
+		ref = ref/2;
+		l = l + 1;
+	}
+	return l;
+}
+
+
+
+//favor functions
+
 int calc_empty(Plateau plateau){
 	int sum=0;
 	for(int row=0; row<4; row++){
@@ -480,6 +522,8 @@ int calc_empty(Plateau plateau){
 	return sum;
 }
 
+
+//to be redefined using the new helper functions
 tuple<int, vector<int>> maxpos(Plateau plateau){
 	tuple<int, vector<int>> m;
 	int max=0;
@@ -500,25 +544,6 @@ tuple<int, vector<int>> maxpos(Plateau plateau){
 }
 
 
-//@pablo-chulilla
-int log2(int powerof2){
-	int ref = powerof2;
-	int l = 0;
-	while(ref>1){
-		ref = ref/2;
-		l = l + 1;
-	}
-	return l;
-}
-
-
-int sum(vector<int> row_or_column){
-	int sum=0;
-	for(int i=0; i<4; i++){
-			sum+=row_or_column[i];
-	}	
-	return sum;
-}
 
 
 
