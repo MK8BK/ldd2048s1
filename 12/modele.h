@@ -77,7 +77,7 @@ string dessine(Plateau p);
  *  @param plateau un Plateau
  *  @return true si le plateau est vide, false sinon
  **/
-bool estTermine(Plateau plateau);
+bool estPerdant(Plateau plateau);
 
 /** permet de savoir si une partie est gagnée
  * @param plateau un Plateau

@@ -502,7 +502,13 @@ tuple<int, vector<int>> maxpos(Plateau plateau){
 
 //@pablo-chulilla
 int log2(int powerof2){
-	return 0;
+	int ref = powerof2;
+	int l = 0;
+	while(ref>1){
+		ref = ref/2;
+		l = l + 1;
+	}
+	return l;
 }
 
 
@@ -520,17 +526,28 @@ int sum(vector<int> row_or_column){
 
 
 //half-done, continue after emergency git versions management
-// tuple<char, vector<int>> maxedge(Plateau plateau){
-// 	char vh;
-// 	vector<int> max_vector=vector<int>(4);
-// 	
+tuple<string, vector<int>> maxedge(Plateau plateau){
+	string idpos;
+	vector<int> max_vector=vector<int>(4);
+	
+
+
+	tuple<string, vector<int>> tup = make_tuple(idpos, max_vector);
+	return tup;
+	
 		
 // }
 
 
 
-//the final ai does not work yet, saving for later
-int eval_move(Plateau p, char move, vector<int> weights){
+
+//max_pos_area()
+
+
+
+
+//the final ai does not work yet, saving for later  vector<int> weights
+int eval_move(Plateau p, char move){
 	try{
 		deplacement(p,ideplacement_dhgb(move),false);
 	}catch(invalid_argument e){
@@ -540,46 +557,49 @@ int eval_move(Plateau p, char move, vector<int> weights){
 	if(estPerdant(deplacement(p,ideplacement_dhgb(move), true))){
 		return 0;
 	}
+	int favor =1;
 
 
+	// int w1, w2, w3, w4, w5, w6, w7, w8, w9, w10;
+	// w1, w2, w3 = weights[0], weights[1], weights[2];
+	// w4, w5, w6 = weights[3], weights[4], weights[5];
+	// w7, w8, w9 = weights[6], weights[7], weights[8];
+	// w10 = weights[9];
 
-	int w1, w2, w3, w4, w5, w6, w7, w8, w9, w10;
-	w1, w2, w3 = weights[0], weights[1], weights[2];
-	w4, w5, w6 = weights[3], weights[4], weights[5];
-	w7, w8, w9 = weights[6], weights[7], weights[8];
-	w10 = weights[9];
+	// Plateau np = deplacement(p,ideplacement_dhgb(move),false);
+	// int favor=0;
 
-	Plateau np = deplacement(p,ideplacement_dhgb(move),false);
-	int favor=0;
-
-	//max pos change
-	if(get<1>(maxpos(np))==get<1>(maxpos(p))){
-		favor+=w1;
-	}
-	//max pos value change favor
-	if(get<0>(maxpos(np))>get<0>(maxpos(p))){
-		favor+=w2*(log2(get<0>(maxpos(np))) - log2(get<0>(maxpos(p)) ));
-	}
+	// //max pos change
+	// if(get<1>(maxpos(np))==get<1>(maxpos(p))){
+	// 	favor+=w1;
+	// }
+	// //max pos value change favor
+	// if(get<0>(maxpos(np))>get<0>(maxpos(p))){
+	// 	favor+=w2*(log2(get<0>(maxpos(np))) - log2(get<0>(maxpos(p)) ));
+	// }
 	
 	
-	//max edge change favor
-	//max half edge change favor
-	//max edge decroissance favor
-	//max half edge decroissance favor
+	// //max edge change favor
+	// //max half edge change favor
+	// //max edge decroissance favor
+	// //max half edge decroissance favor
 
-	//adjacency favor
-	//empty favor
-	if(calc_empty(p)<calc_empty(np)){
-		favor += (calc_empty(np)-calc_empty(p))*w8;
-	}
-	//max score favor
-	int game_score = 0;
-	int ngame_score = score(game_score, p,)
-	if()
-	//compactness favor
+	// //adjacency favor
+	// //empty favor
+	// if(calc_empty(p)<calc_empty(np)){
+	// 	favor += (calc_empty(np)-calc_empty(p))*w8;
+	// }
+	// //max score favor
+	// int game_score = 0;
+	// int ngame_score = score(game_score, p,)
+	// //if()
+	// //compactness favor
+	// //max pos area
+
 
 	return favor;
 }
+
 
 
 
@@ -591,12 +611,12 @@ void ai_answer(string config_path, string move_path, int iteration){
 	vector<char> moves = {'H','B','G','D'};
 	vector<int> move_favors = vector<int>(4);
 	char maxm=moves[0];
-	int maxi=-1;
+	int maxfav=-1;
 	for(int i=0; i<4; i++){
 		move_favors[i] = eval_move(p, moves[i]);
 		cout << to_string(move_favors[i]) << moves[i]<<endl;
-		if(move_favors[i]>maxi){
-			maxi = move_favors[i];
+		if(move_favors[i]>maxfav){
+			maxfav = move_favors[i];
 			maxm = moves[i];
 		}
 	}

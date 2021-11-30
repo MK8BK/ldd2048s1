@@ -222,7 +222,7 @@ string dessine(Plateau p){
  *  @param plateau un Plateau
  *  @return true si le plateau est vide, false sinon
  **/
-bool estTermine(Plateau plateau){
+bool estPerdant(Plateau plateau){
 	Plateau p = plateau;
 	if(deplacementDroite(p)==p && deplacementHaut(p)==p && deplacementGauche(p)==p && deplacementBas(p)==p){
 		return true;
@@ -238,7 +238,7 @@ bool estTermine(Plateau plateau){
 bool estGagnant(Plateau plateau){
 	for(int row=0; row<4; row++){
 		for(int column=0; column<4; column++){
-			if(plateau[row][column]==2048){
+			if(plateau[row][column]==8){
 				return true;
 			}
 		}
@@ -361,6 +361,7 @@ void jeu(){
 	int game_score = 0;
 	Plateau plateau = plateauInitial();
 	Plateau plateau_next = plateauVide();
+	bool jeuGagne = false;
 	while(true){
 		cout << dessine(plateau)<< endl << "score:" <<game_score<<endl;
 		try{
@@ -372,11 +373,16 @@ void jeu(){
 			plateau_next = deplacement(plateau, deplacement_id, true);
 			game_score = score(game_score, plateau, deplacement_id);
 			plateau = plateau_next;
-			if(estGagnant(plateau)){
+			if(estGagnant(plateau) && jeuGagne==false){
 				cout << dessine(plateau_next) << endl;
-				cout << "Vous avez Gagne!"<<endl;
-				return;
-			}else if(estTermine(plateau)){
+				jeuGagne = true;
+				cout << "Vous avez Gagne!\nVoulez vous continuer a jouer?(Y/N):";
+				string choice;
+				getline(cin, choice);
+				if(choice=="N"){
+					return;
+				}
+			}else if(estPerdant(plateau)){
 				cout << dessine(plateau_next) << endl;
 				cout << "Vous avez Perdu!"<<endl;
 				return;
