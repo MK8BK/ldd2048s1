@@ -1,0 +1,72 @@
+// int score(int score_avant, Plateau avant, int ideplacement){
+// 	Plateau apres;
+// 	apres = deplacement(avant, ideplacement, false);
+// 	int nscore=score_avant;
+// 	vector<vector<int>> avant_freq= {{2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072},
+// 	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
+// 	vector<vector<int>> apres_freq= avant_freq;
+// 	for(int column=0; column<17; column++){
+// 		avant_freq[1][column]=count(avant, avant_freq[0][column]);
+// 		apres_freq[1][column]=count(apres, apres_freq[0][column]);
+// 		if(apres_freq[1][column]>avant_freq[1][column]){
+// 			nscore += avant_freq[0][column]*(apres_freq[1][column]-avant_freq[1][column]);
+// 		}
+// 	}
+// 	return nscore;
+// }
+
+
+// void jeu(){
+// 	srand((unsigned) time(0));
+// 	int game_score = 0;
+// 	Plateau plateau = plateauInitial();
+// 	Plateau plateau_next = plateauVide();
+// 	while(true){
+// 		cout << dessine(plateau)<< "score:" <<game_score<<endl;
+// 		try{
+// 			int deplacement_id = ideplacement_dhgb(input_dhgb());
+// 			plateau_next = deplacement(plateau, deplacement_id, true);
+// 			game_score = score(game_score, plateau, deplacement_id);
+// 			plateau = plateau_next;
+// 			if(estGagnant(plateau)){
+// 				cout << dessine(plateau_next) << endl;
+// 				cout << "Vous avez Gagne!"<<endl;
+// 				return;
+// 			}else if(estPerdant(plateau)){
+// 				cout << dessine(plateau_next) << endl;
+// 				cout << "Vous avez Perdu!"<<endl;
+// 				return;
+// 			}
+// 		}catch(invalid_argument e){
+
+// 			cout << e.what() << endl;
+// 			continue;
+// 		}
+// 	}
+// }
+
+
+//to be redefined using the new helper functions
+// tuple<int, vector<int>> maxpos(Plateau plateau){
+// 	tuple<int, vector<int>> m;
+// 	int max=0;
+// 	vector<int> maxi = vector<int>(2);
+// 	for(int row=0; row<4; row++){
+// 		for(int column=0; column<4; column++){
+// 			if(plateau[row][column]>max){
+// 				max = plateau[row][column];
+// 				maxi = {row, column};
+// 			}
+// 		}
+// 	}
+// 	if(count(plateau, max)>1){
+// 		throw "Two maximums, it's not going well!";
+// 	}
+// 	m = make_tuple(max, maxi);
+// 	return m;
+// }
+
+
+
+
+{vertical_right_up_hedge_sum, vertical_right_bottom_hedge_sum, vertical_left_up_hedge_sum, vertical_left_bottom_hedge_sum, horizontal_top_left_hedge_sum, horizontal_top_right_hedge_sum, horizontal_bottom_left_hedge_sum, horizontal_bottom_right_hedge_sum}

@@ -21,7 +21,7 @@ int tireDeuxOuQuatre();
  **/
 Plateau plateauVide();
 
-static Plateau nouvelleTuile(Plateau plateau);
+Plateau nouvelleTuile(Plateau plateau);
 
 
 /** génère deux nombres sur des cases aléatoires d'un Plateau vide
@@ -31,15 +31,15 @@ Plateau plateauInitial();
 
 
 
+Plateau flippe90TrigPlus(Plateau plateau);
 /** déplace les tuiles d'un Plateau vers la gauche et les combine si possible
  *  @param plateau le Plateau
  *  @return le Plateau une fois déplacé vers la gauche
  **/
-static vector<int> collapseRowLeft(vector<int> row);
-static vector<int> mergeRowLeft(vector<int> row);
+vector<int> collapseRowLeft(vector<int> row);
+vector<int> mergeRowLeft(vector<int> row);
 Plateau deplacementGauche(Plateau plateau);
 
-static Plateau flippe90TrigPlus(Plateau plateau);
 
 /** déplace les tuiles d'un Plateau vers la droite et les combine si possible
  *  @param plateau le Plateau
@@ -89,8 +89,9 @@ bool estPerdant(Plateau plateau);
 bool estGagnant(Plateau plateau);
 
 
-static int count(Plateau plateau, int powerof2);
-int log2(int powerof2);
+//int count(Plateau plateau, int powerof2);
+int count_tableau(vector<int> tableau, int valeur);
+int count_plateau(Plateau plateau, int valeur);
 int score(int score_avant, Plateau avant, int ideplacement);
 
 
@@ -121,13 +122,35 @@ tuple<int, char> read_updated_mouvement(string path, int iteration);
 void write_new_config(string path, int iteration, int game_score, Plateau plateau);
 
 
-int calc_empty(Plateau plateau);
+//helper functions
+vector<int> max_tableau(vector<int> tableau);
+tuple<int, vector<int>> max_plateau(Plateau plateau);
 
-tuple<int, vector<int>> maxpos(Plateau plateau);
+int sum_tableau(vector<int> tableau);
+int sum_plateau(Plateau plateau);
 
-int sum(vector<int> row_or_column);
-// tuple<char, vector<int>> maxedge(Plateau plateau);
+int log2(int powerof2);
+
+tuple<string, vector<int>> max_edge(Plateau plateau);
+tuple<string, vector<int>> max_half_edge(Plateau plateau);
+
+bool decroissance(vector<int> tableau);
+
+
+
+int calc_empty_favor(Plateau plateau);
+
+int incremented_score_favor(Plateau plateau_avant, int deplacement);
+
+int maximum_placement_favor(Plateau plateau);
+
+int maximum_movement_favor(Plateau pavant, Plateau papres);
+int maximum_value_change_favor(Plateau pavant, Plateau papres);
+
+
+
 //half-done, continue after emergency git versions management
+//tuple<int, vector<int>> maxpos(Plateau plateau);
 
-int eval_move(Plateau p, char move);
+int eval_move(Plateau p, char move, vector<int> weights);
 void ai_answer(string config_path, string move_path, int iteration);
