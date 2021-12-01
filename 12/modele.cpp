@@ -238,7 +238,7 @@ bool estPerdant(Plateau plateau){
 bool estGagnant(Plateau plateau){
 	for(int row=0; row<4; row++){
 		for(int column=0; column<4; column++){
-			if(plateau[row][column]==8){
+			if(plateau[row][column]==2048){
 				return true;
 			}
 		}
@@ -387,8 +387,9 @@ void jeu(){
 				cout << "Vous avez Perdu!"<<endl;
 				return;
 			}
+			system("clear");
 		}catch(invalid_argument e){
-
+			system("clear");
 			cout << endl << e.what() << endl;
 			continue;
 		}

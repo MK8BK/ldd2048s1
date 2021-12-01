@@ -123,15 +123,15 @@ void write_new_config(string path, int iteration, int game_score, Plateau platea
 
 
 //helper functions
-vector<int> max_tableau(vector<int> tableau);
-tuple<int, vector<int>> max_plateau(Plateau plateau);
+tuple<int,int,vector<int>> max_tableau(vector<int> tableau);
+tuple<int, int, vector<vector<int>>> max_plateau(Plateau plateau);
 
 int sum_tableau(vector<int> tableau);
 int sum_plateau(Plateau plateau);
 
 int log2(int powerof2);
 
-tuple<string, vector<int>> max_edge(Plateau plateau);
+tuple<vector<string>, vector<vector<int>>> max_edge(Plateau plateau);
 tuple<string, vector<int>> max_half_edge(Plateau plateau);
 
 bool decroissance(vector<int> tableau);

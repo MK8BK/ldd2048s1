@@ -70,3 +70,17 @@
 
 
 {vertical_right_up_hedge_sum, vertical_right_bottom_hedge_sum, vertical_left_up_hedge_sum, vertical_left_bottom_hedge_sum, horizontal_top_left_hedge_sum, horizontal_top_right_hedge_sum, horizontal_bottom_left_hedge_sum, horizontal_bottom_right_hedge_sum}
+
+
+
+// int count(Plateau plateau, int powerof2){
+// 	int sum = 0;
+// 	for(int row=0; row<4; row++){
+// 		for(int column=0; column<4; column++){
+// 			if(plateau[row][column]==powerof2){
+// 				sum++;
+// 			}
+// 		}
+// 	}
+// 	return sum;
+// }

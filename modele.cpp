@@ -152,7 +152,7 @@ Plateau deplacementBas(Plateau plateau){
  *  @param direction la direction 0 droite 1 Haut 2 Gauche 3 Bas
  *  @return le Plateau déplacé dans la direction
  **/
-Plateau deplacement(Plateau plateau, int direction, bool tuile=true){
+Plateau deplacement(Plateau plateau, int direction, bool tuile){
 	Plateau auxPlateau;
 	switch (direction){
 		case 0:
