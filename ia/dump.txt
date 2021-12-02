@@ -69,7 +69,9 @@
 
 
 
-{vertical_right_up_hedge_sum, vertical_right_bottom_hedge_sum, vertical_left_up_hedge_sum, vertical_left_bottom_hedge_sum, horizontal_top_left_hedge_sum, horizontal_top_right_hedge_sum, horizontal_bottom_left_hedge_sum, horizontal_bottom_right_hedge_sum}
+{}
+
+{vertical_right_up_hedge_sum, vertical_right_bottom_hedge_sum, vertical_left_up_hedge_sum, vertical_left_bottom_hedge_sum, horizontal_top_left_hedge_sum, horizontal_top_right_hedge_sum, horizontal_bottom_left_hedge_sum, horizontal_bottom_right_hedge_sum}{vertical_right_up_hedge_sum, vertical_right_bottom_hedge_sum, vertical_left_up_hedge_sum, vertical_left_bottom_hedge_sum, horizontal_top_left_hedge_sum, horizontal_top_right_hedge_sum, horizontal_bottom_left_hedge_sum, horizontal_bottom_right_hedge_sum}
 
 
 
@@ -83,4 +85,26 @@
 // 		}
 // 	}
 // 	return sum;
+// }
+
+
+
+//still needs more logical maturity and outlook
+// int maximum_movement_favor(Plateau pavant, Plateau papres){
+// 	int maxv_avant = max_plateau(pavant)[0];
+// 	int maxv_apres = max_plateau(papres)[0];
+
+// 	if(favor_apres==512){
+// 		return 512;
+// 	}else if(favor_apres==256){
+// 		if(favor_avant==512){
+// 			return 0;
+// 		}else if(favor_avant==256){
+// 			return 256;
+// 		}else{
+// 			return 512;
+// 		}
+// 	}else{
+// 		return 0;
+// 	}
 // }

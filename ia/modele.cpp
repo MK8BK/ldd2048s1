@@ -503,90 +503,84 @@ int log2(int powerof2){
 	return l;
 }
 
+float average(vector<int> t){
+	float s = (float)(sum_tableau(t)) / (float)(t.size());
+	return s;
+}
+
+//{"ht","vr","hb","vl"}
+vector<vector<int>> extract_edges(Plateau plateau){
+	return {plateau[0], {plateau[0][3],plateau[1][3],plateau[2][3],plateau[3][3]},
+	plateau[3],{{plateau[0][0],plateau[1][0],plateau[2][0],plateau[3][0]}}};
+}
+
+//{"htl","htr","vrt","vrb","hbl","hbr","vlt","vlb"}
+vector<vector<int>> extract_half_edges(Plateau plateau){
+	vector<vector<int>> extracted = extract_edges(plateau);
+	vector<vector<int>> half_edges = vector<vector<int>>(8);
+	int count=0;
+	for(vector<int> edge:extracted){
+		half_edges[count] = {edge[0],edge[1]};
+		count++;
+		half_edges[count] = {edge[3],edge[2]};
+		count++;
+	}
+	return half_edges;
+}
+
 //tested manually
 //monstrous, but works, and not that inefficient
-//currnly modifying
-/**
- * @brief returns a tuple containing the a vector of the descriptions of max edges,
- * and a vector containing the max_edges
- * 
- * @param Plateau plateau 
- * @return tuple<vector<string>, vector<vector<int>>> 
- */
 tuple<vector<string>, vector<vector<int>>> max_edge(Plateau plateau){
-	Plateau np = plateau;
+	vector<vector<int>> edges = extract_edges(plateau);
 	vector<int> sums = vector<int>(4);
 	for(int i=0; i<4; i++){
-		sums[i]=sum_tableau(np[0]);
-		np=flippe90TrigPlus(np);
+		sums[i]=sum_tableau(edges[i]);
 	}
 	int vmax = get<0>(max_tableau(sums));
-	
+	int n_vmax = get<1>(max_tableau(sums));
+	vector<vector<int>> maximum_edges = vector<vector<int>>(n_vmax);
+	vector<string> descriptions=vector<string>(n_vmax);
+	vector<string> refs = {"ht", "vr", "hb", "vl"};
+	int i=0;
+	int count=0;
+	for(vector<int> edge:edges){
+		if(sum_tableau(edge)==vmax){
+			maximum_edges[count] = edge;
+			descriptions[count] = refs[i];
+			count++;
+		}
+		i++;
+	}
+	tuple<vector<string>, vector<vector<int>>> tup = make_tuple(descriptions,maximum_edges);
+	return tup;
 }
 
 //tested manually
 //if you thought max_edge() was monstrous, check this
-// tuple<string, vector<int>> max_half_edge(Plateau plateau){
-// 	vector<int> vertical_right_up_hedge = {plateau[0][3], plateau[1][3]};
-// 	vector<int> vertical_right_bottom_hedge = {plateau[2][3], plateau[3][3]};
-// 	vector<int> vertical_left_up_hedge = {plateau[0][0], plateau[1][0]};
-// 	vector<int> vertical_left_bottom_hedge = {plateau[2][0], plateau[3][0]};
-// 	vector<int> horizontal_top_left_hedge = {plateau[0][0], plateau[0][1]};
-// 	vector<int> horizontal_top_right_hedge = {plateau[0][2], plateau[0][3]};
-// 	vector<int> horizontal_bottom_left_hedge = {plateau[3][0], plateau[3][1]};
-// 	vector<int> horizontal_bottom_right_hedge = {plateau[3][2], plateau[3][3]};
-// 	int vertical_right_up_hedge_sum      = sum_tableau(vertical_right_up_hedge);
-// 	int vertical_right_bottom_hedge_sum  = sum_tableau(vertical_right_bottom_hedge);
-// 	int vertical_left_up_hedge_sum       = sum_tableau(vertical_left_up_hedge);
-// 	int vertical_left_bottom_hedge_sum   = sum_tableau(vertical_left_bottom_hedge);
-// 	int horizontal_top_left_hedge_sum    = sum_tableau(horizontal_top_left_hedge);
-// 	int horizontal_top_right_hedge_sum   = sum_tableau(horizontal_top_right_hedge);
-// 	int horizontal_bottom_left_hedge_sum = sum_tableau(horizontal_bottom_left_hedge);
-// 	int horizontal_bottom_right_hedge_sum= sum_tableau(horizontal_bottom_right_hedge);
-// 	vector<int> sums = {vertical_right_up_hedge_sum, vertical_right_bottom_hedge_sum,
-// 						vertical_left_up_hedge_sum, vertical_left_bottom_hedge_sum, 
-// 						horizontal_top_left_hedge_sum, horizontal_top_right_hedge_sum,
-// 						horizontal_bottom_left_hedge_sum, horizontal_bottom_right_hedge_sum};
-// 	try{
-// 		int max_edge_sum = max_tableau(sums)[0];
-// 		int max_edge_sum_index = max_tableau(sums)[1];
-// 		cout << to_string(max_edge_sum) << "  " <<to_string(max_edge_sum_index)<<endl;
-// 		if(max_edge_sum_index==0){
-// 			tuple<string, vector<int>> tup1 = make_tuple("vru",vertical_right_up_hedge);
-// 			return tup1;
-// 		}
-// 		else if(max_edge_sum_index==1){
-// 			tuple<string, vector<int>> tup2 = make_tuple("vrb",vertical_right_bottom_hedge);
-// 			return tup2;
-// 		}
-// 		else if(max_edge_sum_index==2){
-// 			tuple<string, vector<int>> tup3 = make_tuple("vlu",vertical_left_up_hedge);
-// 			return tup3;
-// 		}
-// 		else if(max_edge_sum_index==3){
-// 			tuple<string, vector<int>> tup4 = make_tuple("vlb",vertical_left_bottom_hedge);
-// 			return tup4;
-// 		}
-// 		else if(max_edge_sum_index==4){
-// 			tuple<string, vector<int>> tup5 = make_tuple("htl",horizontal_top_left_hedge);
-// 			return tup5;
-// 		}
-// 		else if(max_edge_sum_index==5){
-// 			tuple<string, vector<int>> tup6 = make_tuple("htr",horizontal_top_right_hedge);
-// 			return tup6;
-// 		}
-// 		else if(max_edge_sum_index==6){
-// 			tuple<string, vector<int>> tup7 = make_tuple("hbl",horizontal_bottom_left_hedge);
-// 			return tup7;
-// 		}
-// 		else{
-// 			tuple<string, vector<int>> tup8 = make_tuple("hbr",horizontal_bottom_right_hedge);
-// 			return tup8;
-// 		}
-// 	}catch(invalid_argument &e){
-// 		throw e;
-// 	}
-// }
+tuple<vector<string>, vector<vector<int>>> max_half_edge(Plateau plateau){
+	vector<vector<int>> half_edges = extract_half_edges(plateau);
+	vector<int> sums = vector<int>(8);
+	for(int i=0; i<8; i++){
+		sums[i]=sum_tableau(half_edges[i]);
+	}
+	int vmax = get<0>(max_tableau(sums));
+	int n_vmax = get<1>(max_tableau(sums));
+	vector<vector<int>> maximum_half_edges = vector<vector<int>>(n_vmax);
+	vector<string> descriptions=vector<string>(n_vmax);
+	vector<string> refs = {"htl","htr","vrt","vrb","hbl","hbr","vlt","vlb"};
+	int i=0;
+	int count=0;
+	for(vector<int> half_edge:half_edges){
+		if(sum_tableau(half_edge)==vmax){
+			maximum_half_edges[count] = half_edge;
+			descriptions[count] = refs[i];
+			count++;
+		}
+		i++;
+	}
+	tuple<vector<string>, vector<vector<int>>> tup = make_tuple(descriptions,maximum_half_edges);
+	return tup;
+}
 
 //tested manually
 bool decroissance(vector<int> tableau){
@@ -617,115 +611,142 @@ bool decroissance(vector<int> tableau){
 // optimization)
 
 //tested manually
-int calc_empty_favor(Plateau plateau){
-	return count_plateau(plateau,0)*32;
+int calc_empty_favor(Plateau plateau_apres){
+	return count_plateau(plateau_apres,0)*32;
 }
 
-
 //tested manually
-//find a way to output between 0-512 in a reasonable way compared to other functions
+//unfulfilled goal:find a way to output between 0-512 in a reasonable way compared to other functions
 int incremented_score_favor(Plateau plateau_avant, int deplacement){
 	int incremented_game_score = score(0, plateau_avant, deplacement);
 	return incremented_game_score;
 }
 
 //tested manually
-// int maximum_placement_favor(Plateau plateau){
-// 	vector<int> placement = get<1>(max_plateau(plateau));
-// 	if((placement[0]==0 || placement[0]==3) && (placement[1]==0 || placement[1]==3)){
-// 		return 512;
-// 	}
-// 	else if((placement[0]==0 || placement[0]==3) || (placement[1]==0 || placement[1]==3)){
-// 		return 256;
-// 	}
-// 	else{
-// 		return 0;
-// 	}
-// }
+int placement_favor(vector<int> coordinates){
+	if((coordinates[0]==0 || coordinates[0]==3) && (coordinates[1]==0 || coordinates[1]==3)){
+		return 512;
+	}
+	else if((coordinates[0]==0 || coordinates[0]==3) || (coordinates[1]==0 || coordinates[1]==3)){
+		return 256;
+	}
+	else{
+		return 0;
+	}
+}
 
+//tested manually
+int maximum_value_increase_favor(Plateau pavant, Plateau papres){
+	int maxv_avant = get<0>(max_plateau(pavant));
+	int maxv_apres = get<0>(max_plateau(papres));
+	if(maxv_avant<maxv_apres){
+		return 512;
+	}
+	return 0;
+}
 
-//still needs more logical maturity and outlook
-// int maximum_movement_favor(Plateau pavant, Plateau papres){
-// 	int favor_avant = maximum_placement_favor(pavant);
-// 	int favor_apres = maximum_placement_favor(papres);
-// 	if(favor_apres==512){
-// 		return 512;
-// 	}else if(favor_apres==256){
-// 		if(favor_avant==512){
-// 			return 0;
-// 		}else if(favor_avant==256){
-// 			return 256;
-// 		}else{
-// 			return 512;
-// 		}
-// 	}else{
-// 		return 0;
-// 	}
-// }
+//tested manually
+int num_maximum_value_increase_favor(Plateau pavant, Plateau papres){
+	int num_maxv_avant = get<1>(max_plateau(pavant));
+	int num_maxv_apres = get<1>(max_plateau(papres));
+	if(num_maxv_apres!=num_maxv_avant){
+		return 512;
+	}
+	return 0;
+}
 
-// int maximum_value_change_favor(Plateau pavant, Plateau papres){
-// 	try{
-// 		int maxapres = get<0>(max_plateau(papres));
-// 		if(count_plateau())
-// 		return 256;
-// 	}catch(invalid_argument &e){
-// 		return 512;
-// 	}
+//tested manually
+int maximum_values_placement_favor(Plateau pavant, Plateau papres){
+	int favor=0;
+	vector<vector<int>> maxv_avant_coordinates = get<2>(max_plateau(pavant));
+	vector<vector<int>> maxv_apres_coordinates = get<2>(max_plateau(papres));
+	int avg_avant;
+	int avg_apres;
+	vector<int> favors_avant = vector<int>(maxv_avant_coordinates.size());
+	vector<int> favors_apres = vector<int>(maxv_apres_coordinates.size());
+	int i = 0;
+	for(vector<int> coordinate_pair:maxv_avant_coordinates){
+		favors_avant[i] = placement_favor(coordinate_pair);
+		i++;
+	}
+	i=0;
+	avg_avant = average(favors_avant);
+	for(vector<int> coordinate_pair:maxv_apres_coordinates){
+		favors_apres[i] = placement_favor(coordinate_pair);
+		i++;
+	}
+	avg_apres = average(favors_apres);
+	if(avg_avant>avg_apres){
+		return 0;
+	}else if(avg_avant<avg_apres){
+		return 512;
+	}else{
+		return 256;
+	}
+}
 
-// 	return 0;
-// }
+//a revoir
+int max_edge_change_favor(Plateau pavant, Plateau papres){
+	if(get<0>(max_edge(pavant))==get<0>(max_edge(papres))){
+		return 512;
+	}
+	return 0;
+}
+//a revoir
+int max_half_edge_change_favor(Plateau pavant, Plateau papres){
+	if(get<0>(max_half_edge(pavant))==get<0>(max_half_edge(papres))){
+		return 512;
+	}
+	return 0;
+}
+
+//a rajouter
+//adjacency_favor() function
 
 
 
 //the final ai does not work yet, saving for later  vector<int> weights
-// int eval_move(Plateau p, char move, vector<int> weights){
-// 	try{
-// 		deplacement(p,ideplacement_dhgb(move),false);
-// 	}catch(invalid_argument e){
-// 		return -1;
-// 	}
-// 	if(estPerdant(deplacement(p,ideplacement_dhgb(move), false))){
-// 		return -1;
-// 	}
-
-// 	int w1, w2, w3, w4, w5, w6, w7, w8, w9, w10;
-// 	w1, w2, w3 = weights[0], weights[1], weights[2];
-// 	w4, w5 = weights[3], weights[4];//, weights[5];
-// 	//w7, w8, w9 = weights[6], weights[7], weights[8];
-// 	//w10 = weights[9];
-
-// 	Plateau np = deplacement(p,ideplacement_dhgb(move),false);
-// 	int favor=0;
-// 	favor+=calc_empty_favor(deplacement(p,ideplacement_dhgb(move), true))*w1;
-// 	//favor+=maximum_movement_favor(p, np)*w2;
-// 	favor+=incremented_score_favor(p,ideplacement_dhgb(move))*w3;
-// 	//favor+=maximum_placement_favor(p)*w4;
-// 	//favor+=maximum_placement_favor(np)*w5;
-// 	return favor;
-// }
+int eval_move(Plateau p, char move, vector<int> w){
+	try{
+		deplacement(p,ideplacement_dhgb(move),false);
+	}catch(invalid_argument e){
+		return -1;
+	}
+	if(estPerdant(deplacement(p,ideplacement_dhgb(move), false))){
+		return -1;
+	}
+	Plateau np = deplacement(p,ideplacement_dhgb(move),false);
+	int favor=0;
+	favor+= calc_empty_favor(deplacement(p,ideplacement_dhgb(move), true))*w[0];
+	favor+=incremented_score_favor(p,ideplacement_dhgb(move))*w[1];
+	favor+=maximum_value_increase_favor(p, np)*w[2];
+	favor+=num_maximum_value_increase_favor(p, np)*w[3];
+	favor+=maximum_values_placement_favor(p,np)*w[4];
+	favor+=max_edge_change_favor(p, np)*w[5];
+	favor+=max_half_edge_change_favor(p, np)*w[6];
+	return favor;
+}
 
 
 
 
 
-// void ai_answer(string config_path, string move_path, int iteration){
-// 	Plateau p = get<2>(read_updated_configuration(iteration,move_path));
-// 	Plateau np;
-// 	vector<int> weights = {1,1,10,1,1};
-// 	vector<char> moves = {'H','B','G','D'};
-// 	vector<int> favor_moves = {eval_move(p, moves[0], weights), 
-// 			eval_move(p, moves[1], weights), eval_move(p, moves[2], weights),
-// 			eval_move(p, moves[3], weights)};
-	
-// 	// if(count_tableau(favor_moves, -1)==4){
-// 	// 	cout<<"perd"<<endl;
-// 	// 	exit(1);
-// 	// }
-// 	try{
-// 		write_mouvement(move_path,iteration,moves[max_tableau(favor_moves)[2]]);
-// 	}catch(invalid_argument &e){
-// 		write_mouvement(move_path,iteration,moves[rand()%4]);
-
-// 	}
-// 	//write_mouvement(move_path, iteration, maxm);
-// }
+char ai_answer(Plateau p, vector<int> w){
+	vector<char> moves = {'H','B','G','D'};
+	vector<int> move_favors = {eval_move(p, moves[0], w), 
+			eval_move(p, moves[1], w), eval_move(p, moves[2], w),
+			eval_move(p, moves[3], w)};
+	if(get<1>(max_tableau(move_favors))==1){
+		return moves[get<2>(max_tableau(move_favors))[0]];
+	}
+	int i=0;
+	vector<char> nmv;
+	for(int move_favor: move_favors){
+		if(move_favor==get<0>(max_tableau(move_favors))){
+			nmv.push_back(moves[i]);
+	 	}
+		i++;
+	}
+	int choice = rand()%(nmv.size());
+	return nmv[choice];
+}

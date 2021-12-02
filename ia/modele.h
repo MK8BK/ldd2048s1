@@ -130,9 +130,16 @@ int sum_tableau(vector<int> tableau);
 int sum_plateau(Plateau plateau);
 
 int log2(int powerof2);
+float average(vector<int> t);
+
+
+vector<vector<int>> extract_edges(Plateau plateau);
+vector<vector<int>> extract_half_edges(Plateau plateau);
 
 tuple<vector<string>, vector<vector<int>>> max_edge(Plateau plateau);
-tuple<string, vector<int>> max_half_edge(Plateau plateau);
+tuple<vector<string>, vector<vector<int>>> max_half_edge(Plateau plateau);
+
+
 
 bool decroissance(vector<int> tableau);
 
@@ -142,15 +149,16 @@ int calc_empty_favor(Plateau plateau);
 
 int incremented_score_favor(Plateau plateau_avant, int deplacement);
 
-int maximum_placement_favor(Plateau plateau);
-
-int maximum_movement_favor(Plateau pavant, Plateau papres);
-int maximum_value_change_favor(Plateau pavant, Plateau papres);
-
+int placement_favor(vector<int> coordinates);
+int maximum_value_increase_favor(Plateau pavant, Plateau papres);
+int num_maximum_value_increase_favor(Plateau pavant, Plateau papres);
+int maximum_values_placement_favor(Plateau pavant, Plateau papres);
+int max_edge_change_favor(Plateau pavant, Plateau papres);
+int max_half_edge_change_favor(Plateau pavant, Plateau papres);
 
 
 //half-done, continue after emergency git versions management
 //tuple<int, vector<int>> maxpos(Plateau plateau);
 
 int eval_move(Plateau p, char move, vector<int> weights);
-void ai_answer(string config_path, string move_path, int iteration);
+char ai_answer(Plateau p, vector<int> w);
