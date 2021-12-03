@@ -17,10 +17,14 @@ int main(){
 	srand((unsigned) time(0));
 	string pathin="../archive/tournois/configuration.txt";
 	string pathout="../archive/tournois/mouvements.txt";
-	vector<int> weights = {2,10,1,1,15,1,5,5,1,1};
-	
+	string pathw = "w.txt";
+	vector<int> weights = read_weights(pathw);
 	int iteration=-1;
 	int game_score=0;
+	for(int w:weights){
+		cout<<to_string(w)<<", ";
+	}
+	cout<<endl;
 	Plateau p = plateauInitial();
 	char answer;
 	while(!estPerdant(p)){
@@ -28,7 +32,7 @@ int main(){
 		iteration = get<0>(tup);
 		game_score = get<1>(tup);
 		p = get<2>(tup);
-		cout << dessine(p)<<endl;
+		cout << dessine(p) << to_string(iteration)<<endl;
 		answer = ai_answer(p,weights);
 		cout<<answer<<endl;
 		write_mouvement(pathout,iteration,answer);
@@ -38,13 +42,14 @@ int main(){
 	file<<"";
 	file.close();
 	ofstream file2;
-	file2.open(pathin);
-	file2<<"";
-	file2.close();
-	//Plateau p = {{2,8,4,2},
-	//			 {8,128,16,8},
-	//			 {4,64,4,2},
-	//			 {4,8,2,4}};
+	//file2.open(pathin);
+	//file2<<"";
+	//file2.close();
+	//Plateau p = {{0,2,2,16},
+	//			 {0,2,4,2},
+	//			 {2,0,2,0},
+	//			 {0,0,0,0}};
+	//cout<<to_string(val_adjacency_favor(p,{0,3}))<<endl;
 	//cout<<"Gauche: "<<to_string(eval_move(p,'G',weights)) <<endl;
 	//cout<<"Haut: "<<to_string(eval_move(p,'H',weights)) <<endl;
 	//cout<<"Bas: "<<to_string(eval_move(p,'B',weights)) <<endl;

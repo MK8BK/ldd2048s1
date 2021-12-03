@@ -109,6 +109,7 @@ int ideplacement_dhgb(char dhgb);
 
 
 
+vector<int> read_weights(string path);
 
 tuple<int, int, Plateau> read_configuration(string path);
 
@@ -155,8 +156,8 @@ int num_maximum_value_increase_favor(Plateau pavant, Plateau papres);
 int maximum_values_placement_favor(Plateau pavant, Plateau papres);
 int max_edge_change_favor(Plateau pavant, Plateau papres);
 int max_half_edge_change_favor(Plateau pavant, Plateau papres);
-
-
+int val_adjacency_favor(Plateau p, vector<int> coordinates);
+int adjacency_favor(Plateau p);
 //half-done, continue after emergency git versions management
 //tuple<int, vector<int>> maxpos(Plateau plateau);
 

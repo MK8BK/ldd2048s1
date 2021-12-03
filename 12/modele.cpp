@@ -3,6 +3,8 @@
 #include <cstdlib> 
 #include <time.h>
 #include "modele.h"
+#include <ncurses.h>
+
 using namespace std;
 
 
@@ -32,7 +34,7 @@ Plateau plateauVide(){
 	return pvide;
 }
 
-static Plateau nouvelleTuile(Plateau plateau){
+Plateau nouvelleTuile(Plateau plateau){
 	int v = tireDeuxOuQuatre();
 	int i = rand() % 4;
 	int j = rand() % 4;
@@ -55,7 +57,7 @@ Plateau plateauInitial(){
 }
 
 
-static Plateau flippe90TrigPlus(Plateau plateau){
+Plateau flippe90TrigPlus(Plateau plateau){
 	Plateau flippedPlateau = plateauVide();
 	for(int row=0; row<4;row++){
 		for(int column=0; column<4; column++){
@@ -70,7 +72,7 @@ static Plateau flippe90TrigPlus(Plateau plateau){
  *  @param plateau le Plateau
  *  @return le Plateau une fois déplacé vers la gauche
  **/
-static vector<int> collapseRowLeft(vector<int> row){
+vector<int> collapseRowLeft(vector<int> row){
 	vector<int> nrow = vector<int>(4);
 	int count=0;
 	for (int column=0; column<4; column++){
@@ -85,7 +87,7 @@ static vector<int> collapseRowLeft(vector<int> row){
 	}
 	return nrow;
 }
-static vector<int> mergeRowLeft(vector<int> row){
+vector<int> mergeRowLeft(vector<int> row){
 	vector<int> nrow = vector<int>(4);
 	int count=0;
 	for (int column=0; column<4; column++){
@@ -248,7 +250,7 @@ bool estGagnant(Plateau plateau){
 
 
 
-static int count(Plateau plateau, int powerof2){
+int count(Plateau plateau, int powerof2){
 	int sum = 0;
 	for(int row=0; row<4; row++){
 		for(int column=0; column<4; column++){
@@ -356,7 +358,35 @@ int ideplacement_dhgb(char dhgb){
 }
 
 
+
+int get_input_arrows(){
+	int c;
+	// newterm(NULL, stdin, stdout);
+	// keypad(stdscr, true);
+	c = getch();
+	addch(c);
+	// ;
+	int answer;
+	if(c==KEY_RIGHT){
+		answer=0;
+	}
+	else if(c==KEY_UP){
+		answer =1;
+	}else if(c==KEY_LEFT){
+		answer=2;
+	}else if(c==KEY_DOWN){
+		answer=3;
+	}else{
+		answer=-1;
+	}
+	return answer;
+}
+
 void jeu(){
+	initscr();
+	raw();
+	noecho();
+	keypad(stdscr,true);
 	srand((unsigned) time(0));
 	int game_score = 0;
 	Plateau plateau = plateauInitial();
@@ -365,7 +395,8 @@ void jeu(){
 	while(true){
 		cout << dessine(plateau)<< endl << "score:" <<game_score<<endl;
 		try{
-			int deplacement_id = ideplacement_dhgb(input_dhgb());
+			//int deplacement_id = ideplacement_dhgb(input_dhgb());
+			int deplacement_id = get_input_arrows();
 			if(deplacement_id==-1){
 				cout << "Jeu terminee" << endl;
 				return;
@@ -394,4 +425,5 @@ void jeu(){
 			continue;
 		}
 	}
+	endwin();
 }

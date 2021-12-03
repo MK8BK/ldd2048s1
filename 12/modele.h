@@ -18,7 +18,7 @@ int tireDeuxOuQuatre();
  **/
 Plateau plateauVide();
 
-static Plateau nouvelleTuile(Plateau plateau);
+Plateau nouvelleTuile(Plateau plateau);
 
 
 /** génère deux nombres sur des cases aléatoires d'un Plateau vide
@@ -32,11 +32,11 @@ Plateau plateauInitial();
  *  @param plateau le Plateau
  *  @return le Plateau une fois déplacé vers la gauche
  **/
-static vector<int> collapseRowLeft(vector<int> row);
-static vector<int> mergeRowLeft(vector<int> row);
+vector<int> collapseRowLeft(vector<int> row);
+vector<int> mergeRowLeft(vector<int> row);
 Plateau deplacementGauche(Plateau plateau);
 
-static Plateau flippe90TrigPlus(Plateau plateau);
+Plateau flippe90TrigPlus(Plateau plateau);
 
 /** déplace les tuiles d'un Plateau vers la droite et les combine si possible
  *  @param plateau le Plateau
@@ -86,7 +86,7 @@ bool estPerdant(Plateau plateau);
 bool estGagnant(Plateau plateau);
 
 
-static int count(Plateau plateau, int powerof2);
+int count(Plateau plateau, int powerof2);
 //half-done, continue after emergency git versions management(concerning this function)
 int score(int score_avant, Plateau avant, int ideplacement);
 
@@ -95,7 +95,7 @@ int score(int score_avant, Plateau avant, int ideplacement);
 char input_dhgb();
 
 int ideplacement_dhgb(char dhgb);
-
+int get_input_arrows();
 
 
 

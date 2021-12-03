@@ -333,6 +333,22 @@ int ideplacement_dhgb(char dhgb){
 }
 
 //io functions
+
+vector<int> read_weights(string path){
+	ifstream file;
+	file.open(path);
+	vector<int> weights=vector<int>(10);
+	int temp=0;
+	string stemp;
+	for(int i=0; i<10; i++){
+		getline(file, stemp, ' ');
+		temp = stoi(stemp);
+		weights[i]=temp;
+	}
+	file.close();
+	return weights;
+}
+
 tuple<int, int, Plateau> read_configuration(string path){
 	Plateau plateau = plateauVide();
 	ifstream file;
@@ -700,9 +716,117 @@ int max_half_edge_change_favor(Plateau pavant, Plateau papres){
 	return 0;
 }
 
-//a rajouter
-//adjacency_favor() function
+//tested manually, has to be tested thouroughly
+int val_adjacency_favor(Plateau p, vector<int> coordinates){
+	int fav=0;
+	int i = coordinates[0];
+	int j = coordinates[1];
+	int value=p[i][j];
+	if((i==0)&&(j==0)){
+		if(value==p[0][1]){
+			fav+=1;
+		}
+		if(value==p[1][0]){
+			fav+=128;
+		}
+		return fav;
+	}else if((i==0)&&(j==3)){
+		if(value==p[0][2]){
+			fav+=128;
+		}
+		if(value==p[1][3]){
+			fav+=128;
+		}
+		return fav;
+	}else if((i==3)&&(j==0)){
+		if(value==p[2][0]){
+			fav+=128;
+		}
+		if(value==p[3][1]){
+			fav+=128;
+		}
+		return fav;
+	}else if((i==3)&&(j==3)){
+		if(value==p[3][2]){
+			fav+=128;
+		}
+		if(value==p[2][3]){
+			fav+=128;
+		}
+		return fav;
+	}else if(i==0){
+		if(value==p[0][j+1]){
+			fav+=128;
+		}
+		if(value==p[0][j-1]){
+			fav+=128;
+		}
+		if(value==p[1][j]){
+			fav+=128;
+		}
+		return fav;
+	}else if(i==3){
+		if(value==p[3][j+1]){
+			fav+=128;
+		}
+		if(value==p[3][j-1]){
+			fav+=128;
+		}
+		if(value==p[2][j]){
+			fav+=128;
+		}
+		return fav;
+	}else if(j==0){
+		if(value==p[i][1]){
+			fav+=128;
+		}
+		if(value==p[i+1][0]){
+			fav+=128;
+		}
+		if(value==p[i-1][0]){
+			fav+=128;
+		}
+		return fav;
+	}else if(j==3){
+		if(value==p[i][2]){
+			fav+=128;
+		}
+		if(value==p[i+1][3]){
+			fav+=128;
+		}
+		if(value==p[i-1][3]){
+			fav+=128;
+		}
+		return fav;
+	}else{
+		if(value==p[i+1][j]){
+			fav+=128;
+		}
+		if(value==p[i-1][j]){
+			fav+=128;
+		}
+		if(value==p[i][j+1]){
+			fav+=128;
+		}
+		if(value==p[i][j-1]){
+			fav+=128;
+		}
+		return fav;
+	}
+	return fav;
+}
 
+
+
+int adjacency_favor(Plateau p){
+	int favor=0;
+	for(int row=0; row<4; row++){
+		for(int column=0; column<4; column++){
+			favor+=val_adjacency_favor(p,{row,column})*p[row][column];
+		}
+	}
+	return favor;
+}
 
 
 //the final ai does not work yet, saving for later  vector<int> weights
@@ -724,12 +848,9 @@ int eval_move(Plateau p, char move, vector<int> w){
 	favor+=maximum_values_placement_favor(p,np)*w[4];
 	favor+=max_edge_change_favor(p, np)*w[5];
 	favor+=max_half_edge_change_favor(p, np)*w[6];
+	favor+=adjacency_favor(p)*w[7];
 	return favor;
 }
-
-
-
-
 
 char ai_answer(Plateau p, vector<int> w){
 	vector<char> moves = {'H','B','G','D'};
