@@ -623,12 +623,17 @@ bool decroissance(vector<int> tableau){
 //favor functions
 // favor functions use all the previous functions to give a "favor score" 
 // to a plateau, depending on the good or bad disposition of the numbers,
-//these functions return a number in the range 0-512 (for later statistical
+//these functions return a postiive or negative number (for later statistical
 // optimization)
 
 //tested manually
-int calc_empty_favor(Plateau plateau_apres){
-	return count_plateau(plateau_apres,0)*32;
+int calc_empty_favor(Plateau pavant,Plateau papres){
+	int nul_avant = count_plateau(pavant,0);
+	int nul_apres = count_plateau(papres,0);
+	if(nul_apres>=nul_avant){
+		return 256 + (nul_apres-nul_avant)*32;
+	}
+	return 0;
 }
 
 //tested manually
@@ -818,37 +823,47 @@ int val_adjacency_favor(Plateau p, vector<int> coordinates){
 
 
 
-int adjacency_favor(Plateau p){
-	int favor=0;
+int adjacency_favor(Plateau pavant, Plateau papres){
+	int favor_avant=0;
 	for(int row=0; row<4; row++){
 		for(int column=0; column<4; column++){
-			favor+=val_adjacency_favor(p,{row,column})*p[row][column];
+			favor_avant+=val_adjacency_favor(pavant,{row,column})*pavant[row][column];
 		}
 	}
-	return favor;
+	int favor_apres=0;
+	for(int row=0; row<4; row++){
+		for(int column=0; column<4; column++){
+			favor_apres+=val_adjacency_favor(papres,{row,column})*papres[row][column];
+		}
+	}
+	if(favor_avant>favor_apres){
+		return 0;
+	}
+	return favor_apres-favor_avant;
 }
 
 
 //the final ai does not work yet, saving for later  vector<int> weights
 int eval_move(Plateau p, char move, vector<int> w){
 	try{
-		deplacement(p,ideplacement_dhgb(move),false);
+		deplacement(p,ideplacement_dhgb(move),true);
 	}catch(invalid_argument e){
 		return -1;
 	}
-	if(estPerdant(deplacement(p,ideplacement_dhgb(move), false))){
+	if(estPerdant(deplacement(p,ideplacement_dhgb(move), true))){
 		return -1;
 	}
 	Plateau np = deplacement(p,ideplacement_dhgb(move),false);
 	int favor=0;
-	favor+= calc_empty_favor(deplacement(p,ideplacement_dhgb(move), true))*w[0];
+	favor+= calc_empty_favor(p,deplacement(p,ideplacement_dhgb(move),true))*w[0];
 	favor+=incremented_score_favor(p,ideplacement_dhgb(move))*w[1];
 	favor+=maximum_value_increase_favor(p, np)*w[2];
 	favor+=num_maximum_value_increase_favor(p, np)*w[3];
 	favor+=maximum_values_placement_favor(p,np)*w[4];
+//	favor+=
 	favor+=max_edge_change_favor(p, np)*w[5];
 	favor+=max_half_edge_change_favor(p, np)*w[6];
-	favor+=adjacency_favor(p)*w[7];
+	favor+=adjacency_favor(p,deplacement(p,ideplacement_dhgb(move),true))*w[7];
 	return favor;
 }
 

@@ -146,8 +146,7 @@ bool decroissance(vector<int> tableau);
 
 
 
-int calc_empty_favor(Plateau plateau);
-
+int calc_empty_favor(Plateau pavant,Plateau papres);
 int incremented_score_favor(Plateau plateau_avant, int deplacement);
 
 int placement_favor(vector<int> coordinates);
@@ -157,9 +156,7 @@ int maximum_values_placement_favor(Plateau pavant, Plateau papres);
 int max_edge_change_favor(Plateau pavant, Plateau papres);
 int max_half_edge_change_favor(Plateau pavant, Plateau papres);
 int val_adjacency_favor(Plateau p, vector<int> coordinates);
-int adjacency_favor(Plateau p);
-//half-done, continue after emergency git versions management
-//tuple<int, vector<int>> maxpos(Plateau plateau);
+int adjacency_favor(Plateau pavant, Plateau papres);
 
 int eval_move(Plateau p, char move, vector<int> weights);
 char ai_answer(Plateau p, vector<int> w);
