@@ -42,14 +42,30 @@ int main(){
 	file<<"";
 	file.close();
 	ofstream file2;
-	//file2.open(pathin);
-	//file2<<"";
-	//file2.close();
-	//Plateau p = {{0,2,2,16},
-	//			 {0,2,4,2},
-	//			 {2,0,2,0},
-	//			 {0,0,0,0}};
-	//cout<<to_string(val_adjacency_favor(p,{0,3}))<<endl;
+	file2.open(pathin);
+	file2<<"";
+	file2.close();
+
+
+	//string pathw = "w.txt";
+	//vector<int> weights = read_weights(pathw);
+
+	//Plateau p = {{0,0,2,2},
+	//			{0,0,2,0},
+	//			{0,0,0,0},
+	//			{0,0,0,0}
+	//};
+	//cout<<ai_answer(p,weights)<<endl;
+	//for(int i=0; i<1; i++){
+	//	cout<<ai_answer(p,weights)<<" | ";
+	//}
+	//cout<<endl;
+	// Plateau p = {{0,2,0,2},
+	// 			{0,2,32,4},
+	// 			{0,8,128,512},
+	// 			{2,2,4,4}};
+
+	//Plateau p=get<2>(read_configuration("../archive/tournois/configuration.txt"));
 	//cout<<"Gauche: "<<to_string(eval_move(p,'G',weights)) <<endl;
 	//cout<<"Haut: "<<to_string(eval_move(p,'H',weights)) <<endl;
 	//cout<<"Bas: "<<to_string(eval_move(p,'B',weights)) <<endl;

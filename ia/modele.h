@@ -124,6 +124,7 @@ void write_new_config(string path, int iteration, int game_score, Plateau platea
 
 
 //helper functions
+Plateau rand_filler(Plateau p);
 tuple<int,int,vector<int>> max_tableau(vector<int> tableau);
 tuple<int, int, vector<vector<int>>> max_plateau(Plateau plateau);
 
@@ -147,16 +148,17 @@ bool decroissance(vector<int> tableau);
 
 
 int calc_empty_favor(Plateau pavant,Plateau papres);
-int incremented_score_favor(Plateau plateau_avant, int deplacement);
-
-int placement_favor(vector<int> coordinates);
-int maximum_value_increase_favor(Plateau pavant, Plateau papres);
-int num_maximum_value_increase_favor(Plateau pavant, Plateau papres);
-int maximum_values_placement_favor(Plateau pavant, Plateau papres);
-int max_edge_change_favor(Plateau pavant, Plateau papres);
-int max_half_edge_change_favor(Plateau pavant, Plateau papres);
 int val_adjacency_favor(Plateau p, vector<int> coordinates);
 int adjacency_favor(Plateau pavant, Plateau papres);
+int incremented_score_favor(Plateau plateau_avant, int deplacement);
+
+int placement_favor(Plateau p, vector<int> coordinates);
+int repartition_favor(Plateau pavant, Plateau papres);
+int max_vals_favors(Plateau pavant, Plateau papres);
+int max_edge_change_favor(Plateau pavant, Plateau papres);
+int max_half_edge_change_favor(Plateau pavant, Plateau papres);
+//int val_adjacency_favor(Plateau p, vector<int> coordinates);
+// int adjacency_favor(Plateau pavant, Plateau papres);
 
 int eval_move(Plateau p, char move, vector<int> weights);
 char ai_answer(Plateau p, vector<int> w);

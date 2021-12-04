@@ -7,7 +7,6 @@
 
 using namespace std;
 
-
 typedef vector<vector<int>>Plateau;
 /** Des fonctions peuvent être ajoutés à ce fichier si besoin est (fonctions pour mettre à jour le score par exemple)
  * //
@@ -34,6 +33,10 @@ Plateau plateauVide(){
 	return pvide;
 }
 
+/** génère une nouvelle tuile 2 ou 4 sur une case aleatoire d'un plateau
+ * @param Plateau un plateau
+ * @return Plateau avec une nouvelle tuile 2 ou 4
+ **/
 Plateau nouvelleTuile(Plateau plateau){
 	int v = tireDeuxOuQuatre();
 	int i = rand() % 4;
@@ -47,7 +50,6 @@ Plateau nouvelleTuile(Plateau plateau){
 	return copy;
 }
 
-
 /** génère deux nombres sur des cases aléatoires d'un Plateau vide
  *  @return un Plateau en début de jeu
  **/
@@ -56,7 +58,11 @@ Plateau plateauInitial(){
 	return plateau;
 }
 
-
+/**
+ * Effectue une rotation de 90 degre dans le sens trigonometrique positif d'un plateau
+ * @param Plateau plateau
+ * @return Plateau rotation d'un quart de tour du plateau
+ */
 Plateau flippe90TrigPlus(Plateau plateau){
 	Plateau flippedPlateau = plateauVide();
 	for(int row=0; row<4;row++){
@@ -67,11 +73,11 @@ Plateau flippe90TrigPlus(Plateau plateau){
 	return flippedPlateau;
 }
 
-
-/** déplace les tuiles d'un Plateau vers la gauche et les combine si possible
- *  @param plateau le Plateau
- *  @return le Plateau une fois déplacé vers la gauche
- **/
+/**
+ * Tasse vers la gauche toutes les tuiles non nuls d'une ligne
+ * @param vector<int>: une ligne du plateau
+ * @return vector<int>: la ligne tassée a gauche
+ */
 vector<int> collapseRowLeft(vector<int> row){
 	vector<int> nrow = vector<int>(4);
 	int count=0;
@@ -82,11 +88,17 @@ vector<int> collapseRowLeft(vector<int> row){
 			}
 			else{
 				continue;
-				// count++;
 			}
 	}
 	return nrow;
 }
+
+/**
+ * Combine les cases d'un tableau si possible, place des zeros
+ * 
+ * @param vector<int> un tableau de taille 4
+ * @return vector<int> le tableau avec les cases combinées vers la gauche si possible
+ */
 vector<int> mergeRowLeft(vector<int> row){
 	vector<int> nrow = vector<int>(4);
 	int count=0;
@@ -103,15 +115,18 @@ vector<int> mergeRowLeft(vector<int> row){
 	}
 	return nrow;
 }
+
+/** déplace les tuiles d'un Plateau vers la gauche et les combine si possible
+ *  @param plateau le Plateau
+ *  @return le Plateau une fois déplacé vers la gauche
+ **/
 Plateau deplacementGauche(Plateau plateau){
 	Plateau shiftGauchePlateau=plateauVide();
-	//combine elements when possible
 	for(int row=0; row<4; row++){
 		shiftGauchePlateau[row]=collapseRowLeft(mergeRowLeft(collapseRowLeft(plateau[row])));
 	}
 	return shiftGauchePlateau;
 }
-
 
 /** déplace les tuiles d'un Plateau vers la droite et les combine si possible
  *  @param plateau le Plateau
@@ -122,7 +137,6 @@ Plateau deplacementDroite(Plateau plateau){
 	return flippe90TrigPlus(flippe90TrigPlus(deplacementGauche(flippe90TrigPlus(flippe90TrigPlus(plateau)))));
 }
 
-
 /** déplace les tuiles d'un Plateau vers le haut et les combine si possible
  *  @param plateau le Plateau
  *  @return le Plateau une fois déplacé vers le haut
@@ -132,7 +146,6 @@ Plateau deplacementHaut(Plateau plateau){
 	return flippe90TrigPlus(flippe90TrigPlus(flippe90TrigPlus(deplacementGauche(flippe90TrigPlus(plateau)))));
 }
 
-
 /** déplace les tuiles d'un Plateau vers le bas et les combine si possible
  *  @param plateau le Plateau
  *  @return le Plateau une fois déplacé vers le bas
@@ -141,10 +154,6 @@ Plateau deplacementBas(Plateau plateau){
 	//combine elements when possible
 	return flippe90TrigPlus(flippe90TrigPlus(flippe90TrigPlus(deplacementDroite(flippe90TrigPlus(plateau)))));
 }
-
-
-
-
 
 /** déplace les tuiles d'un Plateau dans la direction donnée et génère une nouvelle tuile si le déplacement est valide
  *  @param plateau le Plateau
@@ -263,27 +272,6 @@ int count(Plateau plateau, int powerof2){
 }
 
 
-
-
-//earlier implementation
-//half-done, continue after emergency git versions management (concerning this function)
-//int score(int score_avant, Plateau avant, int ideplacement){
-//	Plateau apres;
-//	apres = deplacement(avant, ideplacement, false);
-//	int nscore=score_avant;
-//	vector<vector<int>> avant_freq= {{2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072},
-//	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
-//	vector<vector<int>> apres_freq= avant_freq;
-//	for(int column=0; column<17; column++){
-//		avant_freq[1][column]=count(avant, avant_freq[0][column]);
-//		apres_freq[1][column]=count(apres, apres_freq[0][column]);
-//		if(apres_freq[1][column]>avant_freq[1][column]){
-//			nscore += avant_freq[0][column]*(apres_freq[1][column]-avant_freq[1][column]);
-//		}
-//	}
-//	return nscore;
-//}
-
 //new proposed implementation by @pablo-chulilla
 //still debating logic regarding the score incrementation
 
@@ -382,11 +370,8 @@ int get_input_arrows(){
 	return answer;
 }
 
+
 void jeu(){
-	initscr();
-	raw();
-	noecho();
-	keypad(stdscr,true);
 	srand((unsigned) time(0));
 	int game_score = 0;
 	Plateau plateau = plateauInitial();
@@ -395,8 +380,7 @@ void jeu(){
 	while(true){
 		cout << dessine(plateau)<< endl << "score:" <<game_score<<endl;
 		try{
-			//int deplacement_id = ideplacement_dhgb(input_dhgb());
-			int deplacement_id = get_input_arrows();
+			int deplacement_id = ideplacement_dhgb(input_dhgb());
 			if(deplacement_id==-1){
 				cout << "Jeu terminee" << endl;
 				return;
@@ -425,5 +409,136 @@ void jeu(){
 			continue;
 		}
 	}
-	endwin();
 }
+
+
+
+// void jeu(){
+// 	// initscr();
+// 	// raw();
+// 	// noecho();
+// 	// keypad(stdscr,true);
+// 	// srand((unsigned) time(0));
+// 	// int game_score = 0;
+// 	// Plateau plateau = plateauInitial();
+// 	// Plateau plateau_next = plateauVide();
+// 	// bool jeuGagne = false;
+// 	// while(true){
+// 	// 	cout << dessine(plateau)<< endl << "score:" <<game_score<<endl;
+// 	// 	try{
+// 	// 		//int deplacement_id = ideplacement_dhgb(input_dhgb());
+// 	// 		int deplacement_id = get_input_arrows();
+// 	// 		if(deplacement_id==-1){
+// 	// 			cout << "Jeu terminee" << endl;
+// 	// 			return;
+// 	// 		}
+// 	// 		plateau_next = deplacement(plateau, deplacement_id, true);
+// 	// 		game_score = score(game_score, plateau, deplacement_id);
+// 	// 		plateau = plateau_next;
+// 	// 		if(estGagnant(plateau) && jeuGagne==false){
+// 	// 			cout << dessine(plateau_next) << endl;
+// 	// 			jeuGagne = true;
+// 	// 			cout << "Vous avez Gagne!\nVoulez vous continuer a jouer?(Y/N):";
+// 	// 			string choice;
+// 	// 			getline(cin, choice);
+// 	// 			if(choice=="N"){
+// 	// 				return;
+// 	// 			}
+// 	// 		}else if(estPerdant(plateau)){
+// 	// 			cout << dessine(plateau_next) << endl;
+// 	// 			cout << "Vous avez Perdu!"<<endl;
+// 	// 			return;
+// 	// 		}
+// 	// 		system("clear");
+// 	// 	}catch(invalid_argument e){
+// 	// 		system("clear");
+// 	// 		cout << endl << e.what() << endl;
+// 	// 		continue;
+// 	// 	}
+// 	// }
+// 	// endwin();
+
+
+
+
+
+//@pablo-chulilla
+//issues left: should display deplacement invalide when non arrow key pressed
+//instead of exiting the game, also displays ^D when up is pressed, shouldnt
+//messes up the terminal display after game, undisplayed comands and no newlines
+
+
+
+
+// 	initscr();
+// 	refresh();
+// 	cbreak();
+// 	noecho();
+// 	keypad(stdscr,true);
+// 	srand((unsigned) time(0));
+// 	char vide = ' ';
+// 	int xMax, yMax;
+// 	getmaxyx(stdscr, yMax, xMax);
+// 	WINDOW * board_win = newwin(11, 31, (yMax/2) - 7, (xMax/2) - 16);
+// 	refresh();
+// 	int game_score = 0;
+// 	Plateau plateau = plateauInitial();
+// 	Plateau plateau_next = plateauVide();
+// 	bool jeuGagne = false;
+// 	while(true){		
+// 		refresh();
+// 		mvwprintw(board_win, 0, 0, "-----------------------------\n-      -      -      -      -\n-----------------------------\n-      -      -      -      -\n-----------------------------\n-      -      -      -      -\n-----------------------------\n-      -      -      -      -\n-----------------------------\n-----------------------------");
+// 		wrefresh(board_win);
+// 		mvwprintw(board_win, 0, 0, dessine(plateau).data());
+// 		wrefresh(board_win);
+// 		//dessine(plateau);
+// 		//cout << endl; 
+// 		//cout << "score:" <<game_score<<endl;
+// 		//cout << dessine(plateau)<< endl << "score:" <<game_score<<endl;
+// 		try{
+// 			//int deplacement_id = ideplacement_dhgb(input_dhgb());
+// 			int deplacement_id = get_input_arrows();
+// 			if(deplacement_id==-1){
+// 				cout << "Jeu termine" << endl;
+// 				return;
+// 			}
+// 			plateau_next = deplacement(plateau, deplacement_id, true);
+// 			game_score = score(game_score, plateau, deplacement_id);
+// 			plateau = plateau_next;
+// 			if(estGagnant(plateau) && jeuGagne==false){		
+// 				mvwprintw(board_win, 0, 0, dessine(plateau_next).data());
+// 				wrefresh(board_win);
+// 				//dessine(plateau_next);
+// 				//cout << endl; 
+// 				//cout << dessine(plateau_next) << endl;
+// 				jeuGagne = true;
+// 				cout << "Vous avez Gagne!\nVoulez vous continuer a jouer?(Y/N):";
+// 				string choice;
+// 				getline(cin, choice);
+// 				if(choice=="N"){
+// 					return;
+// 				}
+// 			}else if(estPerdant(plateau)){
+// 				mvwprintw(board_win, 0, 0, dessine(plateau_next).data());
+// 				wrefresh(board_win);
+// 				//dessine(plateau_next);
+// 				//cout << endl; 
+// 				//cout << dessine(plateau_next) << endl;
+// 				cout << "Vous avez Perdu!"<<endl;
+// 				return;
+// 			}
+// 			system("clear");
+// 		}catch(invalid_argument e){
+// 			system("clear");
+// 			cout << endl << e.what() << endl;
+// 			continue;
+// 		}
+// 	}
+// 	system("clear");
+// 	endwin();
+// }
+
+
+
+
+
