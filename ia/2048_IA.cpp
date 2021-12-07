@@ -1,6 +1,9 @@
 #include <vector>
 using namespace std;
 #include "modele.h"
+#include "io.h"
+#include "helper.h"
+#include "favor.h"
 #include <iostream>
 #include <cstdlib>
 #include <time.h>
@@ -50,21 +53,23 @@ int main(){
 	//string pathw = "w.txt";
 	//vector<int> weights = read_weights(pathw);
 
-	//Plateau p = {{0,0,2,2},
-	//			{0,0,2,0},
+	//Plateau p = {{0,0,0,0},
 	//			{0,0,0,0},
-	//			{0,0,0,0}
+	//			{0,0,4,2},
+	//			{2,4,8,32}
 	//};
 	//cout<<ai_answer(p,weights)<<endl;
+	//cout<<to_string(decroissance_favor(p, deplacementBas(p)))<<endl;
 	//for(int i=0; i<1; i++){
 	//	cout<<ai_answer(p,weights)<<" | ";
 	//}
 	//cout<<endl;
-	// Plateau p = {{0,2,0,2},
-	// 			{0,2,32,4},
-	// 			{0,8,128,512},
-	// 			{2,2,4,4}};
-
+	//Plateau p = {{0,2,0,2},
+	//			{0,2,32,4},
+	//			{0,8,128,512},
+	//			{2,2,4,4}};
+	//cout << to_string(stable_favor(p,deplacementGauche(p))) <<endl;
+	//cout << to_string(stable_favor(p,deplacementDroite(p))) <<endl;
 	//Plateau p=get<2>(read_configuration("../archive/tournois/configuration.txt"));
 	//cout<<"Gauche: "<<to_string(eval_move(p,'G',weights)) <<endl;
 	//cout<<"Haut: "<<to_string(eval_move(p,'H',weights)) <<endl;

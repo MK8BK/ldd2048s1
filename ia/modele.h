@@ -68,10 +68,11 @@ Plateau deplacementBas(Plateau plateau);
  *  @return le Plateau déplacé dans la direction
  **/
 Plateau deplacement(Plateau plateau, int direction, bool tuile);
-
+Plateau deplacement(Plateau plateau, int direction);
 
 /** affiche un Plateau
  * @param p le Plateau
+ * @return un string representant le pleateau
  **/
 string dessine(Plateau p);
 
@@ -94,71 +95,6 @@ int count_tableau(vector<int> tableau, int valeur);
 int count_plateau(Plateau plateau, int valeur);
 int score(int score_avant, Plateau avant, int ideplacement);
 
-
-
 char input_dhgb();
 
 int ideplacement_dhgb(char dhgb);
-
-
-
-//half-done, continue after emergency git versions management
-//temporarily commented, will soon be deleted, no need for the AI, just awaiting the completion and successful compilation 
-//  of ia_tester.cpp
-// void jeu();
-
-
-
-vector<int> read_weights(string path);
-
-tuple<int, int, Plateau> read_configuration(string path);
-
-tuple<int, int, Plateau> read_updated_configuration(int iteration, string path);
-
-
-void write_mouvement(string path, int iteration, char mouvement);
-
-tuple<int, char> read_mouvement(string path);
-tuple<int, char> read_updated_mouvement(string path, int iteration);
-void write_new_config(string path, int iteration, int game_score, Plateau plateau);
-
-
-//helper functions
-Plateau rand_filler(Plateau p);
-tuple<int,int,vector<int>> max_tableau(vector<int> tableau);
-tuple<int, int, vector<vector<int>>> max_plateau(Plateau plateau);
-
-int sum_tableau(vector<int> tableau);
-int sum_plateau(Plateau plateau);
-
-int log2(int powerof2);
-float average(vector<int> t);
-
-
-vector<vector<int>> extract_edges(Plateau plateau);
-vector<vector<int>> extract_half_edges(Plateau plateau);
-
-tuple<vector<string>, vector<vector<int>>> max_edge(Plateau plateau);
-tuple<vector<string>, vector<vector<int>>> max_half_edge(Plateau plateau);
-
-
-
-bool decroissance(vector<int> tableau);
-
-
-
-int calc_empty_favor(Plateau pavant,Plateau papres);
-int val_adjacency_favor(Plateau p, vector<int> coordinates);
-int adjacency_favor(Plateau pavant, Plateau papres);
-int incremented_score_favor(Plateau plateau_avant, int deplacement);
-
-int placement_favor(Plateau p, vector<int> coordinates);
-int repartition_favor(Plateau pavant, Plateau papres);
-int max_vals_favors(Plateau pavant, Plateau papres);
-int max_edge_change_favor(Plateau pavant, Plateau papres);
-int max_half_edge_change_favor(Plateau pavant, Plateau papres);
-//int val_adjacency_favor(Plateau p, vector<int> coordinates);
-// int adjacency_favor(Plateau pavant, Plateau papres);
-
-int eval_move(Plateau p, char move, vector<int> weights);
-char ai_answer(Plateau p, vector<int> w);

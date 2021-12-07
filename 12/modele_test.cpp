@@ -3,6 +3,7 @@
 #include <cstdlib> 
 #include <time.h>
 #include "modele.h"
+#include <ncurses.h>
 using namespace std;
 
 #define CHECK(test) if (!(test)) cout << "Test failed in file " << __FILE__ << " line " << __LINE__ << ": " #test << endl
@@ -146,7 +147,58 @@ void test_deplacementBas(){
 }
 
 void test_deplacement(){
-	
+	Plateau p={{16,32,4,0},
+		   {2,0,0,0},
+		   {2,32,8,8},
+		   {0,0,0,0}
+	};
+	CHECK(deplacementGauche(p) == deplacement(p,2, false));
+	CHECK(deplacementHaut(p)==deplacement(p,1, false));
+	CHECK(deplacementBas(p)==deplacement(p,3, false));
+	CHECK(deplacementDroite(p)==deplacement(p,0, false));
+	CHECK(deplacementHaut(p)!=deplacement(p,1));
+	CHECK(deplacementBas(p)!=deplacement(p,3));
+	CHECK(deplacementGauche(p)!=deplacement(p,2));
+	CHECK(deplacementDroite(p)!=deplacement(p,0));
+}
+
+void test_dessine(){
+	Plateau p={{16,32,4,0},
+			   {2,0,0,0},
+			   {2,32,8,8},
+			   {0,0,0,0}};
+	string ps = dessine(p);
+	CHECK(ps=="\n*****************************\n*  16  *  32  *  4   *      *\n*****************************\n*  2   *      *      *      *\n*****************************\n*  2   *  32  *  8   *  8   *\n*****************************\n*      *      *      *      *\n*****************************\n");
+}
+
+void test_estPerdant(){
+	CHECK(estPerdant({{2, 2, 2, 2}, {2, 2, 2, 2}, {2, 2, 2, 2}, {2, 2, 2, 2}}) == false);
+	CHECK(estPerdant({{2, 8, 2, 8}, {8, 2, 8, 2}, {2, 8, 2, 8}, {8, 2, 8, 2}}) == true);
+}
+
+void test_estGagnant(){
+	CHECK(estGagnant({{2, 2, 2, 2}, {2, 2, 2, 2}, {2, 2, 2, 2}, {2, 2, 2, 2}}) == false);
+	CHECK(estGagnant({{2048, 2, 2, 2}, {2, 2, 2, 2}, {2, 2, 2, 2}, {2, 2, 2, 2}}) == true);
+	CHECK(estGagnant({{4096, 2048, 2, 2}, {2, 2, 2, 2}, {2, 2, 2, 2}, {2, 2, 2, 2}}) == true);
+}
+
+void test_count(){
+	CHECK(count({{4096, 2048, 2, 2}, {2, 2, 2, 2}, {2, 2, 2, 2}, {2, 2, 2, 2}}, 2) == 14);
+	CHECK(count({{4096, 2048, 2, 2}, {2, 2, 2, 2}, {2, 2, 2, 2}, {2, 2, 2, 2}}, 2048) == 1);
+	CHECK(count({{4096, 2048, 2, 2}, {2, 2, 2, 2}, {2, 2, 2, 2}, {2, 2, 2, 2}}, 8) == 0);
+}
+
+void test_score(){
+	CHECK(score(1234, {{4096, 2048, 2, 2}, {2, 2, 2, 2}, {2, 2, 2, 2}, {2, 2, 2, 2}}, 2) == 1262);
+	CHECK(score(1234, {{4, 2, 2, 4}, {4, 2, 2, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}, 1) == 1250);
+	CHECK(score(1234, {{4, 2, 2, 4}, {4, 2, 2, 0}, {512, 0, 0, 0}, {512, 0, 0, 0}}, 1) == 2274);
+}
+void test_ideplacement_dhgb(){
+	vector<char> move_letters = {'D','H','G','B','Q'};
+	vector<int> move_numbers = {0,1,2,3,-1};
+	for(int i=0; i<4; i++){
+		CHECK(ideplacement_dhgb(move_letters[i])==move_numbers[i]);
+	}
 }
 
 int main(){
@@ -161,4 +213,12 @@ int main(){
 	test_deplacementDroite();
 	test_deplacementHaut();
 	test_deplacementBas();
+	test_deplacement();
+	test_dessine();
+	test_estPerdant();
+	test_estGagnant();
+	test_count();
+	test_score();
+	test_ideplacement_dhgb();
+
 }
