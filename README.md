@@ -39,15 +39,15 @@ Ce projet est un jeu de 2048 programmé en C++ faisant office de capstone au cou
 - Le jeu se joue sur un plateau 4 × 4 ou chaque case est soit vide, soit contient une puissance de 2, inscrite sur une tuile.
 
 <p align="center">
-  <img src="./docs/8.png" align="middle" style="width:50%"><br>
+  <img src="./docs/8.PNG" align="middle" style="width:50%"><br>
   <i>Exemple d'un plateau en milieu de partie.</i>
 </p>
 
 - Le jeu débute avec deux tuiles posées sur le plateau, tirées selon les probabilités suivantes: <ul><li><sup>9</sup>/<sub>10</sub> d'avoir un 2.</li><li><sup>1</sup>/<sub>10</sub> d'avoir un 4.</li></ul>
 
 <p align="center">
-  <img src="./docs/16.png" align="middle" style="width:40%">
-  <img src="./docs/1.png" align="middle" style="width:40%">
+  <img src="./docs/16.PNG" align="middle" style="width:40%">
+  <img src="./docs/1.PNG" align="middle" style="width:40%">
   <br><i>Deux exemples de plateaux en début de partie.</i>
 </p>
 
@@ -56,19 +56,19 @@ Ce projet est un jeu de 2048 programmé en C++ faisant office de capstone au cou
 - Si deux tuiles de même valeur 2<sup>k</sup> sont adjacentes pendant le glissement, alors elles se combinent en une unique tuile etiquetée par la somme des valeurs ( 2<sup>k+1</sup> ) .
 
 <p align="center">
-  <img src="./docs/1.png" align="middle" style="width:30%">
-  <img src="./docs/2.png" align="middle" style="width:30%">
-  <img src="./docs/3.png" align="middle" style="width:30%">
-  <img src="./docs/4.png" align="middle" style="width:30%">
-  <img src="./docs/5.png" align="middle" style="width:30%">
-  <img src="./docs/6.png" align="middle" style="width:30%"><br>
+  <img src="./docs/1.PNG" align="middle" style="width:30%">
+  <img src="./docs/2.PNG" align="middle" style="width:30%">
+  <img src="./docs/3.PNG" align="middle" style="width:30%">
+  <img src="./docs/4.PNG" align="middle" style="width:30%">
+  <img src="./docs/5.PNG" align="middle" style="width:30%">
+  <img src="./docs/6.PNG" align="middle" style="width:30%"><br>
   <i>Exemple des 6 premiers plateaux d'une partie,<br> l'utilisateur à ici joué dans l'ordre:<br> Droite - Bas - Bas - Bas - Droite </i>
 </p>
 
 - Le but du jeu est de créer une tuile portant le numero 2048. 
 
 <p align="center">
-  <img src="./docs/17.png" align="middle" style="width:50%"><br>
+  <img src="./docs/17.PNG" align="middle" style="width:50%"><br>
   <i>Cependant, on pourra continuer à jouer apres avoir atteint le but, en créant des tuiles avec des numéros plus grands et ainsi ameliorer indéfiniment son score.*</i><br> <br>
 
 </p>
@@ -83,7 +83,7 @@ Ce projet est un jeu de 2048 programmé en C++ faisant office de capstone au cou
 - Le jeu se termine lorsque toutes les tuiles sont occupées et que plus aucun mouvement ne permet de combiner de tuiles.
 
 <p align="center">
-  <img src="./docs/7.png" align="middle" style="width:50%"><br>
+  <img src="./docs/7.PNG" align="middle" style="width:50%"><br>
   <i>On observe bien que la partie est perdue, aucun déplacement ne modifie le plateau et il n'y à aucune tuile 2048.</i>
 </p>
 <br>
@@ -92,13 +92,13 @@ Ce projet est un jeu de 2048 programmé en C++ faisant office de capstone au cou
 
 
 <p align="center" style="display:inline-block">
-  <img src="./docs/9.png" align="middle" style="width:30%">
-  <img src="./docs/10.png" align="middle" style="width:30%">
-  <img src="./docs/11.png" align="middle" style="width:30%">
-  <img src="./docs/12.png" align="middle" style="width:30%">
-  <img src="./docs/13.png" align="middle" style="width:30%">
-  <img src="./docs/14.png" align="middle" style="width:30%">
-  <img src="./docs/15.png" align="left" style="width:30%; margin-left:5%">
+  <img src="./docs/9.PNG" align="middle" style="width:30%">
+  <img src="./docs/10.PNG" align="middle" style="width:30%">
+  <img src="./docs/11.PNG" align="middle" style="width:30%">
+  <img src="./docs/12.PNG" align="middle" style="width:30%">
+  <img src="./docs/13.PNG" align="middle" style="width:30%">
+  <img src="./docs/14.PNG" align="middle" style="width:30%">
+  <img src="./docs/15.PNG" align="left" style="width:30%; margin-left:5%">
   <br><br><br><br><br><i><b>Exemple:</b> on observe l'augmentation du score lors des combinaisons de cases. </i>
 </p><br>
 <br>
@@ -238,7 +238,7 @@ L'IA reçoit un plateau à l'iteration N, effectue ses déplacements possibles, 
 Voici un diagramme explicatif.
 
 <p align="center">
-  <img src="./docs/ia_algo_blueprint.png" align="middle" style="width:90%; max-width:500px"><br>
+  <img src="./docs/ia_algo_blueprint.PNG" align="middle" style="width:90%; max-width:500px"><br>
   <i>Diagramme de l'algorithme de l'IA.</i><br> <br>
 </p>
 
@@ -252,7 +252,7 @@ l'IA est composée de 4 parties:
 Voici un diagramme explicatif.
 
 <p align="center">
-  <img src="./docs/ia_blueprint.png" align="middle" style="width:80%; max-width:300px; max-height:500px"><br>
+  <img src="./docs/ia_blueprint.PNG" align="middle" style="width:80%; max-width:300px; max-height:500px"><br>
   <i>Diagramme de la structure de l'IA et son interaction avec le simulateur.</i><br> <br>
 </p>
 
@@ -263,7 +263,7 @@ Les critères d'évaluation de la faveur d'un déplacement sont exprimées par q
   - `incremented_score_favor()` (l'augmentation du score).
 
 <p align="center">
-  <img src="./docs/snake.png" align="middle" style="width:40%; max-width:500px; max-height:500px; margin-right:12px"><img src="./docs/snake2.jpg" align="middle" style="width:40%; max-width:500px; max-height:500px"><br>
+  <img src="./docs/snake.PNG" align="middle" style="width:40%; max-width:500px; max-height:500px; margin-right:12px"><img src="./docs/snake2.jpg" align="middle" style="width:40%; max-width:500px; max-height:500px"><br>
   <i>exemples variés de différents degrés de formation d'une chaine décroissante en serpentin sur le plateau</i><br> <br>
 </p>
 
@@ -276,7 +276,7 @@ Ces fonctions sont appelées par la fonction `eval_move()`, qui leur attribue à
 **Résultats:**
 
 <p align="center">
-  <img src="./docs/milestone512.png" align="middle" style="width:40%; max-width:500px; max-height:500px; margin-right:12px"><img src="./docs/milestone512.png" align="middle" style="width:40%; max-width:500px; max-height:500px"><br>
+  <img src="./docs/milestone512.PNG" align="middle" style="width:40%; max-width:500px; max-height:500px; margin-right:12px"><img src="./docs/milestone512.PNG" align="middle" style="width:40%; max-width:500px; max-height:500px"><br>
   <i>Quelques résultats avec trés peu d'optimisation.</i><br> <br>
 </p>
 
@@ -362,7 +362,7 @@ Moyens de collaboration:
   - Bibliothèque Universitaire.
 
 <p align="center">
-  <img src="./docs/contribm.png" align="middle" style="width:30%; max-width:500px; max-height:500px; margin-right:12px"><img src="./docs/contribp.png" align="middle" style="width:30%; max-width:500px; max-height:500px"><img src="./docs/contributors.png" align="middle" style="width:30%; max-width:500px;height:100%"><br>
+  <img src="./docs/contribm.PNG" align="middle" style="width:30%; max-width:500px; max-height:500px; margin-right:12px"><img src="./docs/contribp.PNG" align="middle" style="width:30%; max-width:500px; max-height:500px"><img src="./docs/contributors.PNG" align="middle" style="width:30%; max-width:500px;height:100%"><br>
   <i>Historique des contributions: Moncef - Pablo 2021</i><br> <br>
 </p>
 
