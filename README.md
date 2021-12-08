@@ -36,7 +36,7 @@ Ce projet est un jeu de 2048 programmé en C++ faisant office de capstone au cou
 
 <br>
 
-- Le jeu se joue sur un plateau 4 × 4 ou chaque case est soit vide, soit contient une puissance de 2, inscrite sur une tuile.
+- Le jeu se joue sur un plateau 4 × 4 où chaque case est soit vide, soit contient une puissance de 2, inscrite sur une tuile.
 
 <p align="center">
   <img src="./docs/8.png" align="middle" style="width:50%"><br>
