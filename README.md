@@ -348,12 +348,12 @@ de vos enseigants), précisez le.* -->
 Nombre d'heures: 
 
 - niveau 0: 16 heures.
-- niveau 1: 4 heures.
+- niveau 1: 8 heures.
 - niveaux 2: 0 heures (déja implémenté).
 - niveau 3 14 heures.
 
 Répartition du travail:
-- niveau 0: Moncef.
+- niveau 0: Moncef(12) - Pablo(4).
 - niveau 1: Pablo.
 - niveau 2: ...(déja implémenté).
 - niveau 3: Algorithmie Moncef - stratégie de jeu collaborative.
