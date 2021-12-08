@@ -91,14 +91,14 @@ Ce projet est un jeu de 2048 programmé en C++ faisant office de capstone au cou
 - Chaque combinaison de tuiles rapporte au joueur un nombre de point équivalent à la valeur de la tuile aprés la combinaison.
 
 
-<p align="center" style="display:inline">
-  <img src="./docs/9.PNG" align="middle" style="width:20%">
+<p align="center" style="display:inline-block">
+  <img src="./docs/9.PNG" align="middle" style="width:30%">
   <img src="./docs/10.PNG" align="middle" style="width:30%">
   <img src="./docs/11.PNG" align="middle" style="width:30%">
   <img src="./docs/12.PNG" align="middle" style="width:30%">
   <img src="./docs/13.PNG" align="middle" style="width:30%">
   <img src="./docs/14.PNG" align="middle" style="width:30%">
-  <img src="./docs/15.PNG" align="left" style="width:30%">
+  <img src="./docs/15.PNG" align="left" style="width:30%; margin-left: 20px">
   <br><br><br><br><br><i><b>Exemple:</b> On observe l'augmentation du score lors des combinaisons de cases. </i>
 </p><br><br><br><br><br><br><br><br><br><br><br>
 <br>
