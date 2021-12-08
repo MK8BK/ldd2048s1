@@ -99,7 +99,7 @@ Ce projet est un jeu de 2048 programmé en C++ faisant office de capstone au cou
   <img src="./docs/13.PNG" align="middle" style="width:30%">
   <img src="./docs/14.PNG" align="middle" style="width:30%">
   <img src="./docs/15.PNG" align="left" style="width:30%; margin-left: 20px">
-  <div style="width:20%"><i><b>Exemple:</b> On observe l'augmentation du score lors des combinaisons de cases. </i></div>
+  <div style="width:20%"><i><b>Exemple:</b> On observe l'augmentation <br>du score lors des combinaisons de cases. </i></div>
 </p><br><br><br><br><br><br><br><br><br><br><br>
 <br>
 
