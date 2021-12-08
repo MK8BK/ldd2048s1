@@ -24,11 +24,7 @@ vector<vector<int>> extract_edges(Plateau p);
 
 vector<vector<int>> extract_edges(Plateau plateau);
 
-vector<vector<int>> extract_half_edges(Plateau plateau);
-
 tuple<vector<string>, vector<vector<int>>> max_edge(Plateau plateau);
-
-tuple<vector<string>, vector<vector<int>>> max_half_edge(Plateau plateau);
 
 int decroissance_tableau(vector<int> tableau);
 vector<int> concatrc(vector<vector<int>> setrc);

@@ -13,7 +13,7 @@ typedef vector<vector<int>> Plateau;
 int main(){
 	initscr();
 	start_color();
-	if(!can_change_color()){
+	if(can_change_color()){
 		jeu_moderne_couleur();
 	} else {
 		jeu_moderne();

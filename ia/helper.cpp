@@ -130,19 +130,6 @@ vector<vector<int>> extract_edges(Plateau p){
 	return {getrow(p,0),getcolumn(p,3), getrow(p,3), getcolumn(p,0)};
 }
 
-//{"htl","htr","vrt","vrb","hbl","hbr","vlt","vlb"}
-// vector<vector<int>> extract_half_edges(Plateau plateau){
-// 	vector<vector<int>> extracted = extract_edges(plateau);
-// 	vector<vector<int>> half_edges = vector<vector<int>>(8);
-// 	int count=0;
-// 	for(vector<int> edge:extracted){
-// 		half_edges[count] = {edge[0],edge[1]};
-// 		count++;
-// 		half_edges[count] = {edge[3],edge[2]};
-// 		count++;
-// 	}
-// 	return half_edges;
-// }
 
 //tested manually
 //monstrous, but works, and not that inefficient
@@ -179,32 +166,6 @@ tuple<vector<string>, vector<vector<int>>> max_edge(Plateau plateau){
 	return tup;
 }
 
-//tested manually
-//if you thought max_edge() was monstrous, check this
-// tuple<vector<string>, vector<vector<int>>> max_half_edge(Plateau plateau){
-// 	vector<vector<int>> half_edges = extract_half_edges(plateau);
-// 	vector<int> sums = vector<int>(8);
-// 	for(int i=0; i<8; i++){
-// 		sums[i]=sum_tableau(half_edges[i]);
-// 	}
-// 	int vmax = get<0>(max_tableau(sums));
-// 	int n_vmax = get<1>(max_tableau(sums));
-// 	vector<vector<int>> maximum_half_edges = vector<vector<int>>(n_vmax);
-// 	vector<string> descriptions=vector<string>(n_vmax);
-// 	vector<string> refs = {"htl","htr","vrt","vrb","hbl","hbr","vlt","vlb"};
-// 	int i=0;
-// 	int count=0;
-// 	for(vector<int> half_edge:half_edges){
-// 		if(sum_tableau(half_edge)==vmax){
-// 			maximum_half_edges[count] = half_edge;
-// 			descriptions[count] = refs[i];
-// 			count++;
-// 		}
-// 		i++;
-// 	}
-// 	tuple<vector<string>, vector<vector<int>>> tup = make_tuple(descriptions,maximum_half_edges);
-// 	return tup;
-// }
 
 //tested manually
 int decroissance_tableau(vector<int> tableau){
@@ -268,20 +229,3 @@ vector<int> tabl_plateau(Plateau p, string description){
 	}
 	return v;
 }
-
-
-// int main(){
-// 	Plateau p = {{0,0,0,0},
-// 				 {0,0,2,0},
-// 				 {0,0,3,0},
-// 				 {0,256,4,0}};
-// 	vector<int> tab = {164,0,0,2,0,0,0,0,0,0,0,0,0,0,0,1};
-// 	vector<int> m = get<1>(max_edge(p))[0];
-// 	string desc = get<0>(max_edge(p))[0];
-// 	vector<int> k = tabl_plateau(p, desc);
-// 	cout<<desc<<endl;
-// 	for(int elem: k){
-// 		cout<<to_string(elem)<<", ";
-// 	}
-// 	cout<<endl;
-// }

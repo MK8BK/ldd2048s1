@@ -357,7 +357,7 @@ int score(int score_avant, Plateau avant, int ideplacement){
 			nscore += avant_freq[0][column]*(apres_freq[1][column]-avant_freq[1][column]);
 		}
 		if(apres_freq[1][column]<avant_freq[1][column] and apres_freq[1][column + 1]==avant_freq[1][column + 1]){
-			nscore = nscore + avant_freq[0][column]*(avant_freq[1][column]-apres_freq[1][column]);
+			nscore = nscore + avant_freq[0][column]*2*(avant_freq[1][column]-apres_freq[1][column]);
 		}
 	}
 	return nscore;
