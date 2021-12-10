@@ -322,15 +322,24 @@ Petite présentation orales et visuelles des fonctions `eval_move()` et `decrois
 
 Pour l'IA :
 ```{code-cell} ipython3
-//ouvrir deux terminaux et naviguer vers le repositoire
+//ouvrir deux terminaux et naviguer vers le repositoire de l'IA
+//utiliser le makefile en tapant la commande
 
-//dans le premier
-cd /archive/tournois && ./tournois_simulation
+$ make
+$ ./2048_IA
 
-//dans le deuxieme
-cd ia/ && make clean && make && ./2048_IA
+
+
+// Dans l'autre terminal
+
+$ ./tournois_simulation 
+
 ```
+Nécessité de garder le fichier `w.txt` dans le même dossier.
 
+Par défaut l'IA suppose que les fichiers `mouvements.txt` et `configurations.txt` sont dans le même dossier.
+
+Prière de modifier les string `pathin` et `pathout` dans `2048_IA.cpp` en cas de modifications.
 <br>
 
 ------
