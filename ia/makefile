@@ -17,4 +17,4 @@ modele.o: modele.cpp modele.h
 	g++ -c modele.cpp
 
 clean:
-	rm *.o 2048_IA log.txt ../archive/tournois/mouvements.txt ../archive/tournois/configuration.txt ../archive/tournois/log.txt
+	rm *.o 2048_IA log.txt mouvements.txt configuration.txt

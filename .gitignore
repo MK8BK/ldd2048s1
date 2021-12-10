@@ -1,0 +1,7 @@
+*
+!*/
+!*.*
+.vscode
+.markdownlint.json
+.vs
+!LICENSE
